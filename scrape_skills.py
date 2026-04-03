@@ -55,7 +55,7 @@ def is_excluded(full_name: str) -> bool:
 
 def is_aggregator(repo: dict) -> bool:
     """判断是否为聚合/索引仓库 (非实际 Skill)"""
-    text = (repo.get("description", "") + " " + repo.get("full_name", "")).lower()
+    text = ((repo.get("description") or "") + " " + (repo.get("full_name") or "")).lower()
     signals = ["curated list", "awesome", "collection of", "registry",
                "marketplace", "directory of", "index of"]
     return sum(1 for s in signals if s in text) >= 2
