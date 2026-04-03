@@ -2,13 +2,13 @@ name: Claude Skills Scout
 
 on:
   schedule:
-    - cron: '0 0 * * 1,4'
+    - cron: '0 0 * * 1,3,5'
   workflow_dispatch:
     inputs:
       top_n:
         description: 'Top N skills to fetch'
         required: false
-        default: '10'
+        default: '15'
 
 permissions:
   contents: write
@@ -29,20 +29,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TOP_N="${{ github.event.inputs.top_n || '10' }}"
+          TOP_N="${{ github.event.inputs.top_n || '15' }}"
           DATE=$(date +%Y-%m-%d)
           mkdir -p reports
           python scrape_skills.py \
             --top "$TOP_N" \
             --token "$GITHUB_TOKEN" \
-            -o "reports/skills-top${TOP_N}-${DATE}.md" \
+            --history "reports/history.json" \
+            -o "reports/skills-${DATE}.md" \
             -v
-          cp "reports/skills-top${TOP_N}-${DATE}.md" reports/LATEST.md
+          cp "reports/skills-${DATE}.md" reports/LATEST.md
 
       - name: Commit report
         run: |
           git config user.name "Skills Scout Bot"
           git config user.email "bot@example.com"
           git add reports/
-          git diff --cached --quiet || git commit -m "🤖 Skills report $(date +%Y-%m-%d)"
+          git diff --cached --quiet || git commit -m "🤖 Skills Scout $(date +%Y-%m-%d)"
           git push
