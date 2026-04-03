@@ -1,0 +1,92 @@
+{
+  "K-Dense-AI/claude-scientific-skills": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 1
+  },
+  "alirezarezvani/claude-skills": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 2
+  },
+  "thedotmack/claude-mem": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 3
+  },
+  "wshobson/agents": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 4
+  },
+  "VoltAgent/awesome-agent-skills": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 5
+  },
+  "hesreallyhim/awesome-claude-code": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 6
+  },
+  "BehiSecc/awesome-claude-skills": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 7
+  },
+  "anthropics/skills": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 8
+  },
+  "OthmanAdi/planning-with-files": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 9
+  },
+  "yusufkaraaslan/Skill_Seekers": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 10
+  },
+  "Orchestra-Research/AI-Research-SKILLs": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 11
+  },
+  "travisvn/awesome-claude-skills": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 12
+  },
+  "ComposioHQ/awesome-claude-skills": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 13
+  },
+  "anthropics/claude-plugins-official": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 14
+  },
+  "Jeffallan/claude-skills": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 15
+  }
+}
