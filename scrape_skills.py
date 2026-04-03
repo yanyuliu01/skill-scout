@@ -77,18 +77,22 @@ SOURCE_AWESOME_LISTS = [
 SEARCH_QUERIES = [
     "SKILL.md claude -awesome -collection",
     "claude code skill plugin",
-    "claude skill automation workflow",
-    "claude skill data analysis csv",
-    "claude skill document pdf docx",
-    "agent skill SKILL.md creative",
-    "claude skill productivity",
+    "skill automation workflow",
+    "skill data csv",
+    "skill document pdf",
+    "agent skill SKILL.md",
     "claude code plugin tool",
+    "skill productivity",
+    "skill creative writing",
 ]
 
 # 中文搜索
 SEARCH_QUERIES_CN = [
-    "claude 技能 SKILL.md",
-    "claude code 插件 实用",
+    "skill 榜单",
+    "实用 skill",
+    "必备 skill",
+    "十大 skill",
+    "skill 集合",
 ]
 
 
@@ -189,7 +193,7 @@ class GitHubClient:
                 articles.append({
                     "title": item.get("full_name", ""),
                     "url": item.get("html_url", ""),
-                    "desc": item.get("description", "")[:100],
+                    "desc": (item.get("description") or "")[:100],
                     "source": "GitHub",
                 })
         time.sleep(0.3)
@@ -332,6 +336,142 @@ class WebSignalCollector:
         return results[:5]
 
     # ── 综合搜索 ──
+
+    def discover_skills_from_web(self, verbose=False) -> list:
+        """
+        核心: 从外部信号源中 *发现* Skill 仓库。
+        搜索 HN/Dev.to 上关于 Claude Skills 的文章，
+        从中提取 GitHub 仓库链接作为新候选。
+        返回 [{name, source, article_title, article_url, points}, ...]
+        """
+        discovered = []
+        seen_repos = set()
+
+        # HN 搜索 — 用推荐体/榜单体/教程体关键词
+        hn_queries = [
+            # 推荐体
+            "best claude skills",
+            "must have claude code",
+            "favorite claude plugins",
+            "claude code setup skills",
+            # 榜单体
+            "top claude skills 2025",
+            "top claude skills 2026",
+            "claude code extensions",
+            # 教程/Show HN
+            "Show HN claude skill",
+            "Show HN SKILL.md",
+            "claude code workflow",
+            # 具体场景
+            "claude skill productivity",
+            "claude code plugin github",
+            "AI coding agent skills",
+            "custom claude instructions SKILL",
+        ]
+        if verbose:
+            print("    HN: 搜索中...", file=sys.stderr)
+        for q in hn_queries:
+            results = self.search_hn(q, max_results=10)
+            for r in results:
+                # 从文章 URL 或标题中提取 GitHub 仓库
+                repos = self._extract_github_repos(
+                    r.get("url", ""), r.get("title", "")
+                )
+                for repo_name in repos:
+                    if repo_name not in seen_repos:
+                        seen_repos.add(repo_name)
+                        discovered.append({
+                            "name": repo_name,
+                            "source": "Hacker News",
+                            "article_title": r.get("title", ""),
+                            "article_url": r.get("hn_url", ""),
+                            "points": r.get("points", 0),
+                        })
+            time.sleep(0.3)
+
+        # Dev.to 搜索 — 博客/教程体
+        devto_queries = [
+            # 推荐体
+            "best claude skills",
+            "must have claude code skills",
+            "essential claude code plugins",
+            "my favorite claude skills",
+            # 教程体
+            "how to use claude skills",
+            "claude code skills tutorial",
+            "claude code tips tricks",
+            "getting started claude skills",
+            # 榜单体
+            "top 10 claude skills",
+            "claude code workflow 2026",
+            "awesome claude code",
+            # 场景体
+            "claude skill development",
+            "AI coding assistant plugins",
+            "claude code productivity",
+        ]
+        if verbose:
+            print("    Dev.to: 搜索中...", file=sys.stderr)
+        for q in devto_queries:
+            results = self.search_devto(q, max_results=10)
+            for r in results:
+                # Dev.to 文章 URL 不是 GitHub，但文章内可能提到 GitHub 仓库
+                # 先用标题推断
+                repos = self._extract_github_repos(
+                    r.get("url", ""), r.get("title", "")
+                )
+                for repo_name in repos:
+                    if repo_name not in seen_repos:
+                        seen_repos.add(repo_name)
+                        discovered.append({
+                            "name": repo_name,
+                            "source": "Dev.to",
+                            "article_title": r.get("title", ""),
+                            "article_url": r.get("url", ""),
+                            "points": r.get("reactions", 0),
+                        })
+            time.sleep(0.3)
+
+        # 中文 RSS — 搜 claude 相关
+        if verbose:
+            print("    RSS: 搜索中...", file=sys.stderr)
+        for kw in ["claude", "skill", "AI 编程", "Claude Code", "AI 插件"]:
+            cn_results = self.search_cn_rss(kw)
+            for r in cn_results:
+                # RSS 里的链接可能指向 GitHub
+                repos = self._extract_github_repos(r.get("url", ""), r.get("title", ""))
+                for repo_name in repos:
+                    if repo_name not in seen_repos:
+                        seen_repos.add(repo_name)
+                        discovered.append({
+                            "name": repo_name,
+                            "source": r.get("source", "RSS"),
+                            "article_title": r.get("title", ""),
+                            "article_url": r.get("url", ""),
+                            "points": 0,
+                        })
+
+        if verbose:
+            print(f"    外部信号共发现 {len(discovered)} 个仓库线索", file=sys.stderr)
+        return discovered
+
+    def _extract_github_repos(self, url: str, title: str) -> list:
+        """从 URL 和标题文本中提取 GitHub owner/repo"""
+        repos = set()
+        # 从 URL 提取
+        m = re.search(r'github\.com/([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)', url)
+        if m:
+            name = m.group(1).rstrip("/.)>")
+            if not name.endswith(".md") and not name.endswith(".io"):
+                repos.add(name)
+        # 从标题提取 owner/repo 模式
+        for m in re.finditer(r'([A-Za-z0-9_-]+/[A-Za-z0-9_-]+)', title):
+            candidate = m.group(1)
+            # 基本过滤: 不是日期、不是路径
+            if len(candidate) > 5 and "/" in candidate and \
+               not re.match(r'\d+/\d+', candidate):
+                repos.add(candidate)
+        return list(repos)
 
     def collect_signals(self, skill_name: str, verbose=False) -> dict:
         """
@@ -764,6 +904,7 @@ def save_history(history: dict, path: str):
 def collect_all(client: GitHubClient, verbose=False) -> dict:
     """采集所有候选 Skill 仓库"""
     seen = {}
+    web_discovered = {}  # 从外部信号发现的仓库，带来源标注
 
     def _add(repos):
         for r in repos:
@@ -771,8 +912,32 @@ def collect_all(client: GitHubClient, verbose=False) -> dict:
             if name and name not in seen and not is_excluded(name):
                 seen[name] = r
 
+    # ★ 阶段 0: 从外部信号(HN/Dev.to/RSS)中发现 Skill
+    print("  [0/5] 外部信号发现 (HN/Dev.to/RSS)...", file=sys.stderr)
+    web = WebSignalCollector()
+    web_leads = web.discover_skills_from_web(verbose=verbose)
+    web_count = 0
+    for lead in web_leads:
+        name = lead["name"]
+        if is_excluded(name) or name in seen:
+            continue
+        repo = client.get_repo(name)
+        if repo and not repo.get("fork", False):
+            # 标记这个仓库是从外部信号发现的
+            repo["_discovered_via"] = {
+                "source": lead["source"],
+                "article_title": lead["article_title"],
+                "article_url": lead["article_url"],
+                "points": lead["points"],
+            }
+            seen[name] = repo
+            web_discovered[name] = lead
+            web_count += 1
+        time.sleep(0.3)
+    print(f"    外部信号发现 {web_count} 个有效仓库", file=sys.stderr)
+
     # 阶段 1: 从 awesome-list 矿脉中挖掘单个 Skill
-    print("  [1/4] 解析聚合仓库中的 Skill 链接...", file=sys.stderr)
+    print("  [1/5] 解析聚合仓库中的 Skill 链接...", file=sys.stderr)
     mined_names = set()
     for source in SOURCE_AWESOME_LISTS:
         if verbose:
@@ -798,7 +963,7 @@ def collect_all(client: GitHubClient, verbose=False) -> dict:
         time.sleep(0.3)
 
     # 阶段 2: 关键词搜索
-    print("  [2/4] 关键词搜索...", file=sys.stderr)
+    print("  [2/5] 关键词搜索...", file=sys.stderr)
     for q in SEARCH_QUERIES:
         if verbose:
             print(f"    搜索: {q}", file=sys.stderr)
@@ -806,7 +971,7 @@ def collect_all(client: GitHubClient, verbose=False) -> dict:
         time.sleep(0.5)
 
     # 阶段 3: 中文搜索
-    print("  [3/4] 中文关键词...", file=sys.stderr)
+    print("  [3/5] 中文关键词...", file=sys.stderr)
     for q in SEARCH_QUERIES_CN:
         if verbose:
             print(f"    搜索: {q}", file=sys.stderr)
@@ -814,7 +979,7 @@ def collect_all(client: GitHubClient, verbose=False) -> dict:
         time.sleep(0.5)
 
     # 阶段 4: Topic 搜索
-    print("  [4/4] Topic 搜索...", file=sys.stderr)
+    print("  [4/5] Topic 搜索...", file=sys.stderr)
     for tq in ["topic:claude-skills", "topic:agent-skills", "topic:claude-code-plugin"]:
         _add(client.search_repos(tq, per_page=20))
         time.sleep(0.5)
@@ -889,19 +1054,47 @@ def generate_report(ranked: list, history: dict, run_date: str) -> str:
     lines.append(f"> 评分 = Stars 25% + 活跃度 20% + 内容质量 20% + **外部热度(HN/Dev.to/RSS) 20%** + 专注度 10% + 完整度 5%")
     lines.append("")
 
+    # ── 外部信号发现的 Skill (置顶) ──
+    web_found = [r for r in ranked if r.get("_discovered_via")]
+    if web_found:
+        lines.append(f"## 外部信号发现 ({len(web_found)} 个)")
+        lines.append("")
+        lines.append("> 这些 Skill 是从 Hacker News、Dev.to、中文科技 RSS 的文章中挖掘出来的")
+        lines.append("")
+        for r in web_found:
+            via = r["_discovered_via"]
+            name = r["full_name"]
+            short = name.split("/")[-1]
+            stars = r.get("stargazers_count", 0)
+            desc = (r.get("description") or "")[:80]
+            source = via.get("source", "")
+            article = via.get("article_title", "")[:60]
+            article_url = via.get("article_url", "")
+            pts = via.get("points", 0)
+            lines.append(f"- **[{short}](https://github.com/{name})** ({stars} stars) - {desc}")
+            if article and article_url:
+                extra = f" ({pts} pts)" if pts else ""
+                lines.append(f"  - 发现来源: [{source}] [{article}]({article_url}){extra}")
+            lines.append("")
+
     # ── 速览表 ──
     lines.append("## 速览")
     lines.append("")
-    lines.append("| # | 状态 | Skill | Stars | 一句话 | 分数 |")
-    lines.append("|---|------|-------|-------|--------|------|")
+    lines.append("| # | 状态 | 来源 | Skill | Stars | 一句话 | 分数 |")
+    lines.append("|---|------|------|-------|-------|--------|------|")
     for i, r in enumerate(ranked, 1):
         name = r["full_name"]
         short = name.split("/")[-1]
         stars = r.get("stargazers_count", 0)
         score = r.get("_score", 0)
-        desc = (r.get("description", "") or "")[:50]
+        desc = (r.get("description") or "")[:50]
         badge = "**NEW**" if name not in history else f"#{history[name].get('appearances',0)+1}"
-        lines.append(f"| {i} | {badge} | [{short}](https://github.com/{name}) | {stars:,} | {desc} | {score} |")
+        # 来源标记
+        if r.get("_discovered_via"):
+            src = r["_discovered_via"]["source"][:5]
+        else:
+            src = "GitHub"
+        lines.append(f"| {i} | {badge} | {src} | [{short}](https://github.com/{name}) | {stars:,} | {desc} | {score} |")
     lines.append("")
 
     # ── C端应用子榜 ──
