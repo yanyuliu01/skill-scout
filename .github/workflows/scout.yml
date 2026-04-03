@@ -1,0 +1,48 @@
+name: Claude Skills Scout
+
+on:
+  schedule:
+    - cron: '0 0 * * 1,4'
+  workflow_dispatch:
+    inputs:
+      top_n:
+        description: 'Top N skills to fetch'
+        required: false
+        default: '10'
+
+permissions:
+  contents: write
+
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run Skills Scout
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TOP_N="${{ github.event.inputs.top_n || '10' }}"
+          DATE=$(date +%Y-%m-%d)
+          mkdir -p reports
+          python scrape_skills.py \
+            --top "$TOP_N" \
+            --token "$GITHUB_TOKEN" \
+            -o "reports/skills-top${TOP_N}-${DATE}.md" \
+            -v
+          cp "reports/skills-top${TOP_N}-${DATE}.md" reports/LATEST.md
+
+      - name: Commit report
+        run: |
+          git config user.name "Skills Scout Bot"
+          git config user.email "bot@example.com"
+          git add reports/
+          git diff --cached --quiet || git commit -m "🤖 Skills report $(date +%Y-%m-%d)"
+          git push
