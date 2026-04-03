@@ -25,6 +25,17 @@ GITHUB_API = "https://api.github.com"
 USER_AGENT = "Claude-Skills-Scout/3.0"
 
 
+def strip_html(text: str) -> str:
+    """清理 HTML 标签、markdown 图片、多余空白"""
+    text = re.sub(r'<[^>]+>', '', text)                    # HTML tags
+    text = re.sub(r'!\[.*?\]\(.*?\)', '', text)            # ![alt](url)
+    text = re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', text)  # [text](url) -> text
+    text = re.sub(r'\*\*(.+?)\*\*', r'\1', text)           # **bold** -> bold
+    text = re.sub(r'[#>*`~|]', '', text)                   # misc markdown
+    text = re.sub(r'\s+', ' ', text).strip()               # collapse whitespace
+    return text
+
+
 # ════════════════════════════════════════════════
 # 1. 排除名单 — 太知名 / 纯聚合 / 不实用
 # ════════════════════════════════════════════════
@@ -77,22 +88,20 @@ SOURCE_AWESOME_LISTS = [
 SEARCH_QUERIES = [
     "SKILL.md claude -awesome -collection",
     "claude code skill plugin",
-    "skill automation workflow",
-    "skill data csv",
-    "skill document pdf",
+    "claude skill automation workflow",
+    "claude skill data csv",
+    "claude skill document pdf",
     "agent skill SKILL.md",
     "claude code plugin tool",
-    "skill productivity",
-    "skill creative writing",
+    "claude skill productivity",
+    "claude skill creative writing",
 ]
 
 # 中文搜索
 SEARCH_QUERIES_CN = [
-    "skill 榜单",
-    "实用 skill",
-    "必备 skill",
-    "十大 skill",
-    "skill 集合",
+    "claude 技能 SKILL.md",
+    "claude code 插件 实用",
+    "claude 必备 skill",
 ]
 
 
@@ -156,6 +165,16 @@ class GitHubClient:
         data = self._request(f"{GITHUB_API}/repos/{full_name}")
         return data if "id" in data else None
 
+    def has_skill_md(self, full_name: str) -> bool:
+        """检查仓库是否包含 SKILL.md 文件 (判断是不是真的 Skill 仓库)"""
+        # 检查根目录
+        data = self._request(f"{GITHUB_API}/repos/{full_name}/contents/SKILL.md")
+        if data.get("name"):
+            return True
+        # 检查 topics 里有没有 skill 相关
+        # (有些仓库把 SKILL.md 放在子目录里)
+        return False
+
     def get_readme_text(self, full_name: str, max_chars=6000) -> str:
         data = self._request(f"{GITHUB_API}/repos/{full_name}/readme")
         if data.get("content"):
@@ -214,7 +233,29 @@ class WebSignalCollector:
     # 中文科技 RSS (公开可访问)
     CN_RSS_FEEDS = {
         "sspai": "https://sspai.com/feed",
+        "infoq_cn": "https://www.infoq.cn/feed",
     }
+
+    # 中文博主/媒体的 GitHub 搜索关键词
+    # (量子位、数字码咨客等的文章常被引用到 GitHub README 和 issue 中)
+    CN_BLOG_DISCOVERY_QUERIES = [
+        # 推荐榜单体
+        "claude skill 必备 推荐",
+        "claude code 十大 插件",
+        "claude skill 最好用",
+        "claude code 效率 神器",
+        "claude 技能 盘点",
+        # 教程体
+        "claude skill 安装 教程",
+        "claude code 自定义 skill 使用",
+        # 博主推荐体
+        "claude skill 测评 体验",
+        "AI 编程 skill 合集",
+        "claude code 插件 生产力",
+        # 量子位/数字码咨客等常用标题风格
+        "claude code 开源 tool github",
+        "AI agent skill 开箱即用",
+    ]
 
     def __init__(self):
         self.hn_cache = {}
@@ -451,6 +492,33 @@ class WebSignalCollector:
                             "points": 0,
                         })
 
+        # ★ 中文博主信号 — 用中文推荐体关键词搜 GitHub
+        # (量子位/数字码咨客等博主的推荐文章常被引用到 GitHub 仓库的 README/issue 中)
+        if verbose:
+            print("    中文博主信号: 搜索中...", file=sys.stderr)
+        for q in self.CN_BLOG_DISCOVERY_QUERIES:
+            encoded = urllib.parse.quote(q)
+            url = f"https://api.github.com/search/repositories?q={encoded}&sort=stars&per_page=5"
+            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT,
+                                                        "Accept": "application/vnd.github+json"})
+            try:
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    data = json.loads(resp.read().decode())
+                for item in data.get("items", [])[:3]:
+                    repo_name = item.get("full_name", "")
+                    if repo_name and repo_name not in seen_repos:
+                        seen_repos.add(repo_name)
+                        discovered.append({
+                            "name": repo_name,
+                            "source": "CN-Blog",
+                            "article_title": f"[{q}] {(item.get('description') or '')[:60]}",
+                            "article_url": item.get("html_url", ""),
+                            "points": item.get("stargazers_count", 0),
+                        })
+            except Exception:
+                pass
+            time.sleep(0.5)
+
         if verbose:
             print(f"    外部信号共发现 {len(discovered)} 个仓库线索", file=sys.stderr)
         return discovered
@@ -560,7 +628,15 @@ def parse_readme_deep(readme: str, repo: dict) -> dict:
         info["what"] = repo.get("description", "") or "暂无详细描述"
         return info
 
-    lines = readme.split("\n")
+    # 预处理: 每行清理 HTML 标签和内嵌图片，但保留换行结构
+    cleaned_lines = []
+    for raw_line in readme.split("\n"):
+        cl = re.sub(r'<[^>]+>', ' ', raw_line)             # strip HTML tags
+        cl = re.sub(r'!\[.*?\]\(.*?\)', '', cl)            # strip images
+        cl = re.sub(r'\s+', ' ', cl).strip()               # collapse spaces
+        cleaned_lines.append(cl)
+
+    lines = cleaned_lines
     full_lower = readme.lower()
 
     # ── 提取 What (第一段非空非标题文本) ──
@@ -725,9 +801,7 @@ def generate_cn_report_entry(repo: dict, readme_info: dict, articles: list,
 
     # ── 这是什么 ──
     what = readme_info.get("what", desc) or desc
-    # 清理 markdown
-    what = re.sub(r'\[(.+?)\]\(.+?\)', r'\\1', what)
-    what = re.sub(r'\*\*(.+?)\*\*', r'\\1', what)
+    what = strip_html(what)
     what = what.strip()
 
     lines.append(f"**它是什么:** {what}")
@@ -738,15 +812,13 @@ def generate_cn_report_entry(repo: dict, readme_info: dict, articles: list,
     if features:
         lines.append("**核心功能:**")
         for f in features[:5]:
-            f_clean = re.sub(r'\*\*(.+?)\*\*', r'\\1', f)
-            f_clean = re.sub(r'\[(.+?)\]\(.+?\)', r'\\1', f_clean)
-            lines.append(f"- {f_clean}")
+            lines.append(f"- {strip_html(f)}")
         lines.append("")
 
     # ── 怎么安装 ──
     usage = readme_info.get("usage", "")
     if usage:
-        lines.append(f"**安装/使用:** `{usage}`")
+        lines.append(f"**安装/使用:** `{strip_html(usage)}`")
         lines.append("")
     else:
         lines.append(f"**安装/使用:** 将 Skill 文件夹放入 Claude 的 skills 目录，或参考仓库 README 的安装说明。")
@@ -761,8 +833,7 @@ def generate_cn_report_entry(repo: dict, readme_info: dict, articles: list,
     # ── 使用示例 ──
     example = readme_info.get("example", "")
     if example:
-        example_clean = re.sub(r'\[(.+?)\]\(.+?\)', r'\\1', example)
-        example_clean = re.sub(r'```[a-z]*', '', example_clean).strip()
+        example_clean = strip_html(example)
         if len(example_clean) > 20:
             lines.append(f"**示例:** {example_clean[:300]}")
             lines.append("")
@@ -1007,10 +1078,23 @@ def rank_and_enrich(client: GitHubClient, repos: dict, top_n: int, verbose=False
     print(f"  粗排: {len(candidates)} 候选 -> {len(finalists)} 入围", file=sys.stderr)
 
     # 精排
+    verified = []
     for i, r in enumerate(finalists):
         name = r["full_name"]
         if verbose:
             print(f"  [{i+1}/{len(finalists)}] {name}", file=sys.stderr)
+
+        # ★ 关键过滤: 检查是否真的是 Claude Skill 仓库
+        topics = [t.lower() for t in r.get("topics", [])]
+        is_skill_topic = any(t in topics for t in ["claude-skills", "agent-skills", "claude-code", "claude-skill", "claude-code-plugin"])
+        has_skill = client.has_skill_md(name)
+        time.sleep(0.2)
+
+        if not has_skill and not is_skill_topic:
+            # 既没有 SKILL.md 也没有 skill 相关 topic，跳过
+            if verbose:
+                print(f"    跳过 (无 SKILL.md / 无 skill topic)", file=sys.stderr)
+            continue
 
         # GitHub 数据
         commits = client.get_recent_commits(name, days=30)
@@ -1034,9 +1118,12 @@ def rank_and_enrich(client: GitHubClient, repos: dict, top_n: int, verbose=False
         r["_articles"] = all_articles
         r["_web_signals"] = web_signals
         r["_score"] = compute_score(r, commits, readme_info, web_signals.get("buzz_score", 0))
+        r["_has_skill_md"] = has_skill
+        verified.append(r)
 
-    finalists.sort(key=lambda r: r.get("_score", 0), reverse=True)
-    return finalists[:top_n]
+    print(f"  精排: {len(verified)} 个通过 Skill 验证", file=sys.stderr)
+    verified.sort(key=lambda r: r.get("_score", 0), reverse=True)
+    return verified[:top_n]
 
 
 # ════════════════════════════════════════════════
