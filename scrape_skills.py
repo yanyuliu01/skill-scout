@@ -178,26 +178,220 @@ class GitHubClient:
             return 0
 
     def search_articles(self, skill_name: str) -> list:
-        """搜索与该 Skill 相关的中文博客/文章 (通过 GitHub search 间接)"""
+        """搜索 GitHub 上与该 Skill 相关的讨论"""
         short = skill_name.split("/")[-1]
-        queries = [
-            f"{short} claude skill",
-            f"{short} claude 教程 OR 推荐 OR 测评",
-        ]
+        q = urllib.parse.quote(f"{short} claude skill")
+        url = f"{GITHUB_API}/search/repositories?q={q}&sort=updated&per_page=3"
+        data = self._request(url)
         articles = []
-        for q in queries:
-            encoded = urllib.parse.quote(q)
-            url = f"{GITHUB_API}/search/repositories?q={encoded}&sort=updated&per_page=3"
-            data = self._request(url)
-            for item in data.get("items", [])[:2]:
-                if item.get("full_name") != skill_name:
-                    articles.append({
-                        "title": item.get("full_name", ""),
-                        "url": item.get("html_url", ""),
-                        "desc": item.get("description", "")[:100],
+        for item in data.get("items", [])[:2]:
+            if item.get("full_name") != skill_name:
+                articles.append({
+                    "title": item.get("full_name", ""),
+                    "url": item.get("html_url", ""),
+                    "desc": item.get("description", "")[:100],
+                    "source": "GitHub",
+                })
+        time.sleep(0.3)
+        return articles
+
+
+# ════════════════════════════════════════════════
+# 3.5 外部信号采集器 (HN / Dev.to / RSS)
+#     全部免费无认证，GitHub Actions 可直接使用
+# ════════════════════════════════════════════════
+
+class WebSignalCollector:
+    """从 GitHub 之外的信号源采集 Skill 相关信息"""
+
+    HN_API = "https://hn.algolia.com/api/v1"
+    DEVTO_API = "https://dev.to/api"
+
+    # 中文科技 RSS (公开可访问)
+    CN_RSS_FEEDS = {
+        "sspai": "https://sspai.com/feed",
+    }
+
+    def __init__(self):
+        self.hn_cache = {}
+        self.devto_cache = {}
+        self.cn_cache = {}
+
+    def _fetch_json(self, url: str, timeout=10) -> dict:
+        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return json.loads(resp.read().decode())
+        except Exception:
+            return {}
+
+    def _fetch_text(self, url: str, timeout=10) -> str:
+        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return resp.read().decode("utf-8", errors="replace")
+        except Exception:
+            return ""
+
+    # ── Hacker News ──
+
+    def search_hn(self, query: str, max_results=5) -> list:
+        """搜索 Hacker News 上的讨论 (免费无限额)"""
+        if query in self.hn_cache:
+            return self.hn_cache[query]
+
+        q = urllib.parse.quote(query)
+        # 搜 story 和 show_hn
+        url = f"{self.HN_API}/search?query={q}&tags=story&hitsPerPage={max_results}"
+        data = self._fetch_json(url)
+        results = []
+        for hit in data.get("hits", [])[:max_results]:
+            title = hit.get("title", "")
+            hn_url = f"https://news.ycombinator.com/item?id={hit.get('objectID', '')}"
+            ext_url = hit.get("url", "")
+            points = hit.get("points", 0) or 0
+            comments = hit.get("num_comments", 0) or 0
+            created = hit.get("created_at", "")[:10]
+            results.append({
+                "title": title,
+                "url": ext_url or hn_url,
+                "hn_url": hn_url,
+                "points": points,
+                "comments": comments,
+                "date": created,
+                "source": "Hacker News",
+            })
+        self.hn_cache[query] = results
+        time.sleep(0.2)
+        return results
+
+    # ── Dev.to ──
+
+    def search_devto(self, query: str, max_results=5) -> list:
+        """搜索 Dev.to 博客文章 (免费无限额)"""
+        if query in self.devto_cache:
+            return self.devto_cache[query]
+
+        q = urllib.parse.quote(query)
+        url = f"{self.DEVTO_API}/articles?per_page={max_results}&search={q}"
+        data = self._fetch_json(url)
+        results = []
+        if isinstance(data, list):
+            for article in data[:max_results]:
+                results.append({
+                    "title": article.get("title", ""),
+                    "url": article.get("url", ""),
+                    "reactions": article.get("positive_reactions_count", 0),
+                    "date": (article.get("published_at", "") or "")[:10],
+                    "author": article.get("user", {}).get("username", ""),
+                    "source": "Dev.to",
+                })
+        self.devto_cache[query] = results
+        time.sleep(0.2)
+        return results
+
+    # ── 中文 RSS ──
+
+    def search_cn_rss(self, keyword: str) -> list:
+        """搜索中文科技 RSS 中包含关键词的文章"""
+        results = []
+        for name, feed_url in self.CN_RSS_FEEDS.items():
+            if name in self.cn_cache:
+                xml = self.cn_cache[name]
+            else:
+                xml = self._fetch_text(feed_url)
+                self.cn_cache[name] = xml
+                time.sleep(0.3)
+
+            if not xml:
+                continue
+
+            # 简易 XML 解析 (不依赖 xml.etree 的复杂逻辑)
+            items = re.findall(r'<item>(.*?)</item>', xml, re.DOTALL)
+            for item_xml in items:
+                title_m = re.search(r'<title><!\[CDATA\[(.*?)\]\]></title>', item_xml)
+                if not title_m:
+                    title_m = re.search(r'<title>(.*?)</title>', item_xml)
+                link_m = re.search(r'<link>(.*?)</link>', item_xml)
+                desc_m = re.search(r'<description><!\[CDATA\[(.*?)\]\]></description>', item_xml, re.DOTALL)
+
+                if not title_m:
+                    continue
+
+                title = title_m.group(1).strip()
+                # 检查关键词是否在标题或描述中
+                desc_text = desc_m.group(1) if desc_m else ""
+                search_text = (title + " " + desc_text).lower()
+
+                if keyword.lower() in search_text:
+                    results.append({
+                        "title": title,
+                        "url": link_m.group(1).strip() if link_m else "",
+                        "source": name,
                     })
-            time.sleep(0.3)
-        return articles[:3]
+        return results[:5]
+
+    # ── 综合搜索 ──
+
+    def collect_signals(self, skill_name: str, verbose=False) -> dict:
+        """
+        为一个 Skill 采集所有外部信号。
+        返回 {articles: [...], hn_points: int, devto_reactions: int, buzz_score: float}
+        """
+        short_name = skill_name.split("/")[-1]
+        all_articles = []
+        total_hn_points = 0
+        total_devto_reactions = 0
+
+        # HN 搜索 (尝试多个 query)
+        for q in [short_name, f"{short_name} claude", f"{short_name} AI skill"]:
+            hn_results = self.search_hn(q, max_results=3)
+            for r in hn_results:
+                if short_name.lower() in r.get("title", "").lower() or \
+                   short_name.lower() in r.get("url", "").lower():
+                    all_articles.append(r)
+                    total_hn_points += r.get("points", 0)
+            if hn_results:
+                break  # 第一个有结果的 query 就够了
+
+        # Dev.to 搜索
+        for q in [f"claude {short_name}", short_name]:
+            devto_results = self.search_devto(q, max_results=3)
+            for r in devto_results:
+                title_lower = r.get("title", "").lower()
+                if short_name.lower() in title_lower or "claude" in title_lower:
+                    all_articles.append(r)
+                    total_devto_reactions += r.get("reactions", 0)
+            if devto_results:
+                break
+
+        # 中文 RSS
+        for kw in [short_name, "claude skill", "claude code"]:
+            cn_results = self.search_cn_rss(kw)
+            all_articles.extend(cn_results)
+            if cn_results:
+                break
+
+        # 去重 (按 URL)
+        seen_urls = set()
+        unique = []
+        for a in all_articles:
+            url = a.get("url", "")
+            if url and url not in seen_urls:
+                seen_urls.add(url)
+                unique.append(a)
+
+        # 计算综合 buzz score (0-30)
+        buzz = min(total_hn_points / 50, 1.0) * 10 + \
+               min(total_devto_reactions / 20, 1.0) * 5 + \
+               min(len(unique) / 3, 1.0) * 15
+
+        return {
+            "articles": unique[:8],
+            "hn_points": total_hn_points,
+            "devto_reactions": total_devto_reactions,
+            "buzz_score": round(buzz, 1),
+        }
 
 
 # ════════════════════════════════════════════════
@@ -433,13 +627,31 @@ def generate_cn_report_entry(repo: dict, readme_info: dict, articles: list,
             lines.append(f"**示例:** {example_clean[:300]}")
             lines.append("")
 
-    # ── 相关文章 ──
+    # ── 相关文章/讨论 ──
     if articles:
-        lines.append("**相关资源:**")
-        for a in articles[:3]:
+        lines.append("**外部讨论与文章:**")
+        for a in articles[:5]:
             if a.get("url"):
+                source = a.get("source", "")
                 title = a.get("title", "") or a.get("desc", "")[:60]
-                lines.append(f"- [{title}]({a['url']})")
+                extra = ""
+                if a.get("points"):
+                    extra = f" ({a['points']} pts, {a.get('comments', 0)} comments)"
+                elif a.get("reactions"):
+                    extra = f" ({a['reactions']} reactions)"
+                lines.append(f"- [{source}] [{title}]({a['url']}){extra}")
+        lines.append("")
+
+    # ── 外部热度指标 ──
+    web_sig = repo.get("_web_signals", {})
+    if web_sig.get("buzz_score", 0) > 0:
+        parts = []
+        if web_sig.get("hn_points", 0) > 0:
+            parts.append(f"HN {web_sig['hn_points']} pts")
+        if web_sig.get("devto_reactions", 0) > 0:
+            parts.append(f"Dev.to {web_sig['devto_reactions']} reactions")
+        parts.append(f"热度分 {web_sig['buzz_score']}/30")
+        lines.append(f"**外部热度:** {' | '.join(parts)}")
         lines.append("")
 
     # ── Topics ──
@@ -457,14 +669,15 @@ def generate_cn_report_entry(repo: dict, readme_info: dict, articles: list,
 # 6. 评分模型
 # ════════════════════════════════════════════════
 
-def compute_score(repo: dict, commits: int = 0, readme_info: dict = None) -> float:
+def compute_score(repo: dict, commits: int = 0, readme_info: dict = None, web_buzz: float = 0) -> float:
     """
     实用型 Skill 评分 (0-100):
-    - Stars (30%): 但降低头部效应，让小众精品也能出头
-    - 活跃度 (25%): 近期更新 + 提交频率
-    - 内容质量 (25%): README 信息量 (有功能列表、安装说明、示例)
-    - 完整度 (10%): 描述、License、Topics
-    - 专注度 (10%): 奖励聚焦单一功能的仓库，惩罚过大的集合
+    - Stars (25%): 降低头部效应
+    - 活跃度 (20%): 近期更新 + 提交频率
+    - 内容质量 (20%): README 信息量
+    - 外部热度 (20%): HN/Dev.to/中文科技媒体讨论
+    - 完整度 (5%): 描述、License、Topics
+    - 专注度 (10%): 奖励聚焦单一功能
     """
     stars = repo.get("stargazers_count", 0)
     forks = repo.get("forks_count", 0)
@@ -472,8 +685,8 @@ def compute_score(repo: dict, commits: int = 0, readme_info: dict = None) -> flo
     has_license = bool(repo.get("license"))
     has_topics = len(repo.get("topics", [])) > 0
 
-    # Stars: 对数+平方根混合，让 50 星和 5000 星的差距不要太大
-    star_score = min((math.log10(max(stars, 1)) * 0.6 + math.sqrt(stars) * 0.01) / 3, 1.0) * 30
+    # Stars: 对数+平方根混合，让小众精品也能出头
+    star_score = min((math.log10(max(stars, 1)) * 0.6 + math.sqrt(stars) * 0.01) / 3, 1.0) * 25
 
     # 活跃度
     pushed_at = repo.get("pushed_at", "")
@@ -482,31 +695,31 @@ def compute_score(repo: dict, commits: int = 0, readme_info: dict = None) -> flo
         try:
             pushed = datetime.fromisoformat(pushed_at.replace("Z", "+00:00"))
             days_ago = (datetime.now(timezone.utc) - pushed).days
-            recency = max(0, (1 - days_ago / 180)) * 12  # 半年内有更新
+            recency = max(0, (1 - days_ago / 180)) * 10
         except Exception:
             pass
-    commit_s = min(commits / 15, 1.0) * 13
+    commit_s = min(commits / 15, 1.0) * 10
 
     # 内容质量 (README 信息量)
     quality = 0
     if readme_info:
         if readme_info.get("features"):
-            quality += 8
+            quality += 7
         if readme_info.get("usage"):
-            quality += 6
+            quality += 5
         if readme_info.get("example"):
-            quality += 6
+            quality += 5
         if readme_info.get("tools"):
-            quality += 3
-        if len(readme_info.get("what", "")) > 100:
             quality += 2
-    quality = min(quality, 25)
+        if len(readme_info.get("what", "")) > 100:
+            quality += 1
+    quality = min(quality, 20)
 
     # 完整度
-    completeness = sum([has_desc, has_license, has_topics]) / 3 * 10
+    completeness = sum([has_desc, has_license, has_topics]) / 3 * 5
 
-    # 专注度: 惩罚名字里带 awesome/collection 的，奖励单一功能
-    focus = 5  # 基础分
+    # 专注度
+    focus = 5
     name_lower = repo.get("full_name", "").lower()
     desc_lower = (repo.get("description", "") or "").lower()
     if any(kw in name_lower for kw in ["awesome", "collection", "registry"]):
@@ -514,9 +727,12 @@ def compute_score(repo: dict, commits: int = 0, readme_info: dict = None) -> flo
     elif any(kw in desc_lower for kw in ["220+", "100+", "comprehensive collection"]):
         focus = 2
     else:
-        focus = 10  # 聚焦型仓库满分
+        focus = 10
 
-    return round(star_score + recency + commit_s + quality + completeness + focus, 1)
+    # 外部热度 (HN/Dev.to/中文RSS) — 最高 20 分
+    buzz = min(web_buzz, 20)
+
+    return round(star_score + recency + commit_s + quality + completeness + focus + buzz, 1)
 
 
 # ════════════════════════════════════════════════
@@ -610,9 +826,10 @@ def collect_all(client: GitHubClient, verbose=False) -> dict:
 
 
 def rank_and_enrich(client: GitHubClient, repos: dict, top_n: int, verbose=False) -> list:
-    """粗排 → 精排 → 深度信息补充"""
+    """粗排 -> 精排 -> 深度信息补充 (含外部信号)"""
+    web = WebSignalCollector()
 
-    # 粗排 (只用 stars + 基本信息)
+    # 粗排
     candidates = []
     for name, repo in repos.items():
         if repo.get("stargazers_count", 0) < 2:
@@ -621,33 +838,37 @@ def rank_and_enrich(client: GitHubClient, repos: dict, top_n: int, verbose=False
         candidates.append(repo)
 
     candidates.sort(key=lambda r: r["_score_rough"], reverse=True)
-    # 取 top_n * 2 进入精排
     finalists = candidates[:top_n * 2]
-    print(f"  粗排完成: {len(candidates)} 候选 -> {len(finalists)} 入围", file=sys.stderr)
+    print(f"  粗排: {len(candidates)} 候选 -> {len(finalists)} 入围", file=sys.stderr)
 
-    # 精排: 补充详细信息
+    # 精排
     for i, r in enumerate(finalists):
         name = r["full_name"]
         if verbose:
-            print(f"  [{i+1}/{len(finalists)}] 深度分析: {name}", file=sys.stderr)
+            print(f"  [{i+1}/{len(finalists)}] {name}", file=sys.stderr)
 
-        # 近期提交
+        # GitHub 数据
         commits = client.get_recent_commits(name, days=30)
         time.sleep(0.3)
-
-        # 深度解析 README
         readme = client.get_readme_text(name, max_chars=6000)
         time.sleep(0.3)
         readme_info = parse_readme_deep(readme, r)
-
-        # 搜索相关文章
-        articles = client.search_articles(name)
+        gh_articles = client.search_articles(name)
         time.sleep(0.3)
+
+        # 外部信号 (HN / Dev.to / 中文 RSS)
+        if verbose:
+            print(f"    外部信号采集...", file=sys.stderr)
+        web_signals = web.collect_signals(name, verbose=verbose)
+
+        # 合并文章列表 (GitHub + 外部)
+        all_articles = gh_articles + web_signals.get("articles", [])
 
         r["_commits"] = commits
         r["_readme_info"] = readme_info
-        r["_articles"] = articles
-        r["_score"] = compute_score(r, commits, readme_info)
+        r["_articles"] = all_articles
+        r["_web_signals"] = web_signals
+        r["_score"] = compute_score(r, commits, readme_info, web_signals.get("buzz_score", 0))
 
     finalists.sort(key=lambda r: r.get("_score", 0), reverse=True)
     return finalists[:top_n]
@@ -665,7 +886,7 @@ def generate_report(ranked: list, history: dict, run_date: str) -> str:
     lines.append("")
     lines.append(f"> 自动挖掘 GitHub 上实用型 Claude Skills 隐藏宝石")
     lines.append(f"> 本期 Top {len(ranked)} | {new_count} 个新发现 | 已排除官方仓库和大型聚合列表")
-    lines.append(f"> 评分 = 内容质量 25% + 活跃度 25% + Stars 30% + 专注度 10% + 完整度 10%")
+    lines.append(f"> 评分 = Stars 25% + 活跃度 20% + 内容质量 20% + **外部热度(HN/Dev.to/RSS) 20%** + 专注度 10% + 完整度 5%")
     lines.append("")
 
     # ── 速览表 ──
@@ -733,6 +954,25 @@ def generate_report(ranked: list, history: dict, run_date: str) -> str:
         for r in active:
             if r.get("_commits", 0) > 0:
                 lines.append(f"- [{r['full_name'].split('/')[-1]}](https://github.com/{r['full_name']}) - {r['_commits']} commits")
+        lines.append("")
+
+    # 外部热议排行
+    buzzed = sorted(ranked, key=lambda r: r.get("_web_signals", {}).get("buzz_score", 0), reverse=True)[:5]
+    has_buzz = [r for r in buzzed if r.get("_web_signals", {}).get("buzz_score", 0) > 0]
+    if has_buzz:
+        lines.append("**外部热议 (HN/Dev.to/中文RSS):**")
+        for r in has_buzz:
+            ws = r.get("_web_signals", {})
+            name = r['full_name'].split('/')[-1]
+            parts = []
+            if ws.get("hn_points", 0) > 0:
+                parts.append(f"HN {ws['hn_points']}pts")
+            if ws.get("devto_reactions", 0) > 0:
+                parts.append(f"Dev.to {ws['devto_reactions']}x")
+            n_articles = len(ws.get("articles", []))
+            if n_articles > 0:
+                parts.append(f"{n_articles} 篇文章")
+            lines.append(f"- [{name}](https://github.com/{r['full_name']}) - {', '.join(parts)}")
         lines.append("")
 
     lines.append("---")
