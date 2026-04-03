@@ -14,14 +14,14 @@
   "thedotmack/claude-mem": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 2,
+    "appearances": 3,
     "best_rank": 3
   },
   "wshobson/agents": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 2,
-    "best_rank": 4
+    "appearances": 3,
+    "best_rank": 2
   },
   "VoltAgent/awesome-agent-skills": {
     "first_seen": "2026-04-03",
@@ -62,8 +62,8 @@
   "Orchestra-Research/AI-Research-SKILLs": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 2,
-    "best_rank": 10
+    "appearances": 3,
+    "best_rank": 9
   },
   "travisvn/awesome-claude-skills": {
     "first_seen": "2026-04-03",
@@ -86,31 +86,31 @@
   "Jeffallan/claude-skills": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 3,
-    "best_rank": 7
+    "appearances": 5,
+    "best_rank": 4
   },
   "qwibitai/nanoclaw": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 1,
+    "appearances": 2,
     "best_rank": 1
   },
   "aden-hive/hive": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 1,
+    "appearances": 2,
     "best_rank": 2
   },
   "eigent-ai/eigent": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 1,
+    "appearances": 2,
     "best_rank": 3
   },
   "googleworkspace/cli": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 1,
+    "appearances": 2,
     "best_rank": 4
   },
   "wasp-lang/open-saas": {
@@ -122,13 +122,13 @@
   "agentskills/agentskills": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 1,
-    "best_rank": 9
+    "appearances": 2,
+    "best_rank": 3
   },
   "trailofbits/skills": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 1,
+    "appearances": 2,
     "best_rank": 11
   },
   "htmlstreamofficial/preline": {
@@ -140,13 +140,31 @@
   "ykdojo/claude-code-tips": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 1,
-    "best_rank": 14
+    "appearances": 2,
+    "best_rank": 11
   },
   "shadcn-ui/ui": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
     "appearances": 1,
     "best_rank": 15
+  },
+  "jarrodwatts/claude-hud": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 12
+  },
+  "teng-lin/notebooklm-py": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 13
+  },
+  "refly-ai/refly": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 14
   }
 }
