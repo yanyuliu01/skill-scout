@@ -1,284 +1,442 @@
-# 🏆 Claude Skills 周报 — 2026-04-03
+# Claude Skills 实用挖掘周报 - 2026-04-03
 
-> 自动生成 · 本期 Top 15 · 其中 **15 个新上榜** · 评分 = Stars×35% + 活跃度×20% + 完整度×15% + 中文热度×20% + Forks×10%
+> 自动挖掘 GitHub 上实用型 Claude Skills 隐藏宝石
+> 本期 Top 15 | 10 个新发现 | 已排除官方仓库和大型聚合列表
+> 评分 = Stars 25% + 活跃度 20% + 内容质量 20% + **外部热度(HN/Dev.to/RSS) 20%** + 专注度 10% + 完整度 5%
 
-## 📋 总榜 Top 15
+## 速览
 
-| # | 状态 | 仓库 | ⭐ | 🏷️ 类别 | 📊 分 |
-|---|------|------|-----|--------|------|
-| 1 | 🆕 新上榜 | [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) | 17,206 | 🎨 创意/写作/设计 | 100.0 |
-| 2 | 🆕 新上榜 | [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills) | 9,040 | 🛠️ 开发工具 | 99.6 |
-| 3 | 🆕 新上榜 | [thedotmack/claude-mem](https://github.com/thedotmack/claude-mem) | 44,771 | 🛠️ 开发工具 | 90.0 |
-| 4 | 🆕 新上榜 | [wshobson/agents](https://github.com/wshobson/agents) | 32,851 | ⚡ 效率/自动化 | 90.0 |
-| 5 | 🆕 新上榜 | [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) | 13,922 | 🛠️ 开发工具 | 90.0 |
-| 6 | 🆕 新上榜 | [hesreallyhim/awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) | 36,009 | 📚 聚合/索引 | 90.0 |
-| 7 | 🆕 新上榜 | [BehiSecc/awesome-claude-skills](https://github.com/BehiSecc/awesome-claude-skills) | 8,136 | 📚 聚合/索引 | 89.1 |
-| 8 | 🆕 新上榜 | [anthropics/skills](https://github.com/anthropics/skills) | 109,586 | 🛠️ 开发工具 | 88.3 |
-| 9 | 🆕 新上榜 | [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files) | 17,926 | ⚡ 效率/自动化 | 88.0 |
-| 10 | 🆕 新上榜 | [yusufkaraaslan/Skill_Seekers](https://github.com/yusufkaraaslan/Skill_Seekers) | 12,192 | 🛠️ 开发工具 | 88.0 |
-| 11 | 🆕 新上榜 | [Orchestra-Research/AI-Research-SKILLs](https://github.com/Orchestra-Research/AI-Research-SKILLs) | 6,046 | 🛠️ 开发工具 | 86.9 |
-| 12 | 🆕 新上榜 | [travisvn/awesome-claude-skills](https://github.com/travisvn/awesome-claude-skills) | 10,411 | 🎨 创意/写作/设计 | 86.8 |
-| 13 | 🆕 新上榜 | [ComposioHQ/awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills) | 50,737 | ⚡ 效率/自动化 | 85.6 |
-| 14 | 🆕 新上榜 | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | 15,845 | 🛠️ 开发工具 | 85.0 |
-| 15 | 🆕 新上榜 | [Jeffallan/claude-skills](https://github.com/Jeffallan/claude-skills) | 7,593 | 🛠️ 开发工具 | 84.9 |
+| # | 状态 | 来源 | Skill | Stars | 一句话 | 分数 |
+|---|------|------|-------|-------|--------|------|
+| 1 | **NEW** | GitHub | [nanoclaw](https://github.com/qwibitai/nanoclaw) | 26,340 | A lightweight alternative to OpenClaw that runs in | 94.0 |
+| 2 | **NEW** | GitHub | [hive](https://github.com/aden-hive/hive) | 10,006 | Outcome driven agent development framework and run | 93.0 |
+| 3 | **NEW** | GitHub | [eigent](https://github.com/eigent-ai/eigent) | 13,393 | Eigent: The Open Source Cowork Desktop to Unlock Y | 92.0 |
+| 4 | **NEW** | GitHub | [cli](https://github.com/googleworkspace/cli) | 23,638 | Google Workspace CLI — one command-line tool for D | 91.9 |
+| 5 | **NEW** | GitHub | [open-saas](https://github.com/wasp-lang/open-saas) | 13,761 | A 100% free modern JS SaaS boilerplate (React, Nod | 89.9 |
+| 6 | #2 | GitHub | [agents](https://github.com/wshobson/agents) | 32,854 | Intelligent automation and multi-agent orchestrati | 89.9 |
+| 7 | #2 | GitHub | [claude-skills](https://github.com/Jeffallan/claude-skills) | 7,596 | 66 Specialized Skills for Full-Stack Developers. T | 88.1 |
+| 8 | #2 | GitHub | [claude-skills](https://github.com/Jeffallan/claude-skills) | 7,596 | 66 Specialized Skills for Full-Stack Developers. T | 88.1 |
+| 9 | **NEW** | GitHub | [agentskills](https://github.com/agentskills/agentskills) | 14,933 | Specification and documentation for Agent Skills | 88.0 |
+| 10 | #2 | GitHub | [AI-Research-SKILLs](https://github.com/Orchestra-Research/AI-Research-SKILLs) | 6,050 | Comprehensive open-source library of AI research a | 85.3 |
+| 11 | **NEW** | GitHub | [skills](https://github.com/trailofbits/skills) | 4,254 | Trail of Bits Claude Code skills for security rese | 84.5 |
+| 12 | **NEW** | GitHub | [preline](https://github.com/htmlstreamofficial/preline) | 6,285 | Preline UI is an open-source set of prebuilt UI co | 83.8 |
+| 13 | #2 | GitHub | [claude-mem](https://github.com/thedotmack/claude-mem) | 44,776 | A Claude Code plugin that automatically captures e | 82.9 |
+| 14 | **NEW** | GitHub | [claude-code-tips](https://github.com/ykdojo/claude-code-tips) | 7,094 | 45 tips for getting the most out of Claude Code, f | 82.3 |
+| 15 | **NEW** | GitHub | [ui](https://github.com/shadcn-ui/ui) | 111,378 | A set of beautifully-designed, accessible componen | 81.0 |
 
-## 🎯 C端应用榜 (普通用户可直接受益)
+## C端应用精选 (11 个)
 
-> 筛选标准: 非开发者也能直接使用，覆盖文档/创意/效率/数据/生活等日常场景
+> 非开发者也能直接用: 文档办公、创意设计、效率提升、数据分析等
 
-| # | 仓库 | ⭐ | 场景 | 一句话说明 |
-|---|------|-----|------|----------|
-| 1 | [wshobson/agents](https://github.com/wshobson/agents) | 32,851 | ⚡ 效率/自动化 | Agents |
-| 2 | [anthropics/skills](https://github.com/anthropics/skills) | 109,586 | 🛠️ 开发工具 | Anthropic 官方 Skills 合集 |
-| 3 | [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files) | 17,926 | ⚡ 效率/自动化 | Planning With Files |
-| 4 | [ComposioHQ/awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills) | 50,737 | ⚡ 效率/自动化 | Composio 跨应用自动化 Skills |
+### [nanoclaw](https://github.com/qwibitai/nanoclaw)
 
-## 📝 详细信息
+> Stars 26,340 | Forks 10,331 | 近30天 404 commits | 更新于 2026-04-03 | TypeScript | C端友好
 
-### 🆕 本期新上榜
+**它是什么:** <p align="center"> <img src="assets/nanoclaw-logo.png" alt="NanoClaw" width="400"> </p>
 
-#### [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills)
+**核心功能:**
+- No installation wizard; Claude Code guides setup.
+- No monitoring dashboard; ask Claude what's happening.
+- No debugging tools; describe the problem and Claude fixes it.
+- Isolated group context** - Each group has its own `CLAUDE.md` memory, isolated filesystem, and runs in its own container sandbox with only that filesy
+- Main channel** - Your private channel (self-chat) for admin control; every group is completely isolated
 
-**136 个科学研究 Skills** · 🎨 创意/写作/设计
+**安装/使用:** `git clone https://github.com/<your-username>/nanoclaw.git`
 
-📖 **是什么:** 覆盖癌症基因组学、药物靶点结合、分子动力学、RNA 速度分析、地理空间科学、时间序列预测等领域，对接 78+ 科学数据库。配套 K-Dense 桌面 AI 助手。
+**兼容:** Claude Code
 
-🔧 **怎么用:** 安装 uv 包管理器后，将 Skill 文件夹复制到 Claude Code 的 skills 目录。每个 Skill 自动处理依赖。
+**外部讨论与文章:**
+- [GitHub] [sskarz/nanoclawbster](https://github.com/sskarz/nanoclawbster)
+- [GitHub] [mk-knight23/AGENTS-COLLECTION](https://github.com/mk-knight23/AGENTS-COLLECTION)
+- [Hacker News] [Show HN: NanoClaw – “Clawdbot” in 500 lines of TS with Apple container isolation](https://github.com/gavrielc/nanoclaw) (533 pts, 224 comments)
+- [Hacker News] [NanoClaw moved from Apple Containers to Docker](https://twitter.com/Gavriel_Cohen/status/2025603982769410356) (169 pts, 141 comments)
+- [Hacker News] [Running NanoClaw in a Docker Shell Sandbox](https://www.docker.com/blog/run-nanoclaw-in-docker-shell-sandboxes/) (163 pts, 80 comments)
 
-✨ **效果:** 让 Claude 变成一个多学科科研助手——可以执行多步骤的科学工作流，如「分析这个基因组数据并找出潜在的药物靶点」。
+**外部热度:** HN 865 pts | 热度分 25.0/30
 
-> ⭐ 17,206 · 🍴 1,894 · 📊 得分 100.0 · 近30天 41 commits · 中文热度 57
-> 语言: Python · License: MIT · Topics: `agent-skills, ai-scientist, bioinformatics, chemoinformatics, claude, claude-skills`
-
----
-
-#### [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills)
-
-**220+ Claude Skills 最大开源合集** · 🛠️ 开发工具
-
-📖 **是什么:** 目前 GitHub 上最大的单体 Claude Skills 仓库，包含 220+ 个 Skills，覆盖工程、营销、产品、合规、C-level 咨询等领域。所有 Python 工具零依赖。支持 11 种 AI Agent 工具。
-
-🔧 **怎么用:** 克隆仓库后运行 `./scripts/install.sh` 自动安装。也支持通过 `./scripts/convert.sh --tool cursor` 转换为其他工具格式。
-
-✨ **效果:** 像一个「技能百宝箱」——需要写营销文案时有营销 Skill，需要做代码审查时有安全 Skill。每个 Skill 都是独立的 SKILL.md，按需启用。
-
-> ⭐ 9,040 · 🍴 1,106 · 📊 得分 99.6 · 近30天 326 commits · 中文热度 22725
-> 语言: Python · License: MIT · Topics: `agent-plugins, agent-skills, agentic-ai, ai-coding-agent, anthropic-claude, claude-ai`
+*Topics: ai-agents, ai-assistant, claude-code, claude-skills, openclaw*
 
 ---
 
-#### [thedotmack/claude-mem](https://github.com/thedotmack/claude-mem)
+### [hive](https://github.com/aden-hive/hive)
 
-**Claude Mem** · 🛠️ 开发工具
+> Stars 10,006 | Forks 5,604 | 近30天 945 commits | 更新于 2026-04-03 | Python | C端友好
 
-📖 **是什么:** A Claude Code plugin that automatically captures everything Claude does during your coding sessions, compresses it with AI (using Claude's agent-sdk), and injects relevant context back into future sessions.
+**它是什么:** <p align="center"> <img width="100%" alt="Hive Banner" src="https://github.com/user-attachments/assets/a027429b-5d3c-4d34-88e4-0feaeaabbab3" /> </p>
 
-🔧 **怎么用:** 克隆仓库后将 Skill 文件夹复制到 Claude 的 skills 目录即可使用。
+**核心功能:**
+- Contributing - How to contribute and submit PRs
 
-✨ **效果:** 让 Claude 在编码任务中遵循最佳实践，提升代码质量和开发效率。
+**安装/使用:** `- Python 3.11+ for agent development`
 
-> ⭐ 44,771 · 🍴 3,382 · 📊 得分 90.0 · 近30天 53 commits · 中文热度 22
-> 语言: TypeScript · License: NOASSERTION · Topics: `ai, ai-agents, ai-memory, anthropic, artificial-intelligence, chromadb`
+**外部讨论与文章:**
+- [GitHub] [wrsmith108/launchpad-claude-skill](https://github.com/wrsmith108/launchpad-claude-skill)
+- [GitHub] [babel3-com/b3-plugins](https://github.com/babel3-com/b3-plugins)
+- [Hacker News] ["You've angered the hive"](http://arstechnica.com/tech-policy/news/2011/02/anonymous-to-security-firm-working-with-fbi-youve-angered-the-hive.ars) (521 pts, 214 comments)
+- [Hacker News] [We found critical vulnerabilities in Hive Social](https://zerforschung.org/posts/hive-en/) (219 pts, 78 comments)
+- [Hacker News] [HiveNightmare a.k.a. SeriousSAM – anybody can read the registry in Windows 10](https://doublepulsar.com/hivenightmare-aka-serioussam-anybody-can-read-the-registry-in-windows-10-7a871c465fa5) (171 pts, 175 comments)
 
----
+**外部热度:** HN 911 pts | 热度分 25.0/30
 
-#### [wshobson/agents](https://github.com/wshobson/agents)
-
-**Agents** · ⚡ 效率/自动化
-
-📖 **是什么:** Intelligent automation and multi-agent orchestration for Claude Code 兼容: Claude Code。
-
-🔧 **怎么用:** 克隆仓库后将 Skill 文件夹复制到 Claude 的 skills 目录即可使用。
-
-✨ **效果:** 把跨应用的重复操作变成一句话指令，大幅提升日常效率。
-
-> ⭐ 32,851 · 🍴 3,576 · 📊 得分 90.0 · 近30天 49 commits · 中文热度 4629
-> 语言: Python · License: MIT · Topics: `agents, anthropic, anthropic-claude, automation, claude, claude-code`
+*Topics: agent, agent-framework, agent-skills, anthropic, automation, autonomous-agents, claude, harness*
 
 ---
 
-#### [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills)
+### [eigent](https://github.com/eigent-ai/eigent)
 
-**Awesome Agent Skills** · 🛠️ 开发工具
+> Stars 13,393 | Forks 1,560 | 近30天 48 commits | 更新于 2026-04-03 | TypeScript | C端友好
 
-📖 **是什么:** Claude Code Skills and 1000+ agent skills from official dev teams and the community, compatible with Codex, Antigravity, Gemini CLI, Cursor and others. 包含 20+ 个 Skill。 兼容: Claude Code, Codex。
+**它是什么:** <div align="center"><a name="readme-top"></a>
 
-🔧 **怎么用:** 克隆仓库后将 Skill 文件夹复制到 Claude 的 skills 目录即可使用。
+**核心功能:**
+- ✅ Local Deployment
+- ✅ Open Source
+- ✅ Custom Model Support
+- ✅ MCP Integration
+- 🏭 Workforce
 
-✨ **效果:** 让 Claude 在编码任务中遵循最佳实践，提升代码质量和开发效率。
+**安装/使用:** `git clone https://github.com/eigent-ai/eigent.git`
 
-> ⭐ 13,922 · 🍴 1,425 · 📊 得分 90.0 · 近30天 71 commits · 中文热度 16
-> 语言: None · License: MIT · Topics: `agent-skills, ai-agents, antigravity-skills, awesome, awesome-list, awesome-lists`
+**外部讨论与文章:**
+- [Hacker News] [Eigentechno – Principal Component Analysis applied to electronic music](https://www.math.uci.edu/~isik/posts/Eigentechno.html) (315 pts, 58 comments)
+- [Hacker News] [Eigent: An open source Claude Cowork alternative](https://github.com/eigent-ai/eigent) (35 pts, 7 comments)
 
----
+**外部热度:** HN 460 pts | 热度分 20.0/30
 
-#### [hesreallyhim/awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code)
-
-**Awesome Claude Code** · 📚 聚合/索引
-
-📖 **是什么:** A curated list of awesome skills, hooks, slash-commands, agent orchestrators, applications, and plugins for Claude Code by Anthropic 兼容: Claude Code。
-
-🔧 **怎么用:** 克隆仓库后将 Skill 文件夹复制到 Claude 的 skills 目录即可使用。
-
-✨ **效果:** 作为发现入口，帮你快速找到适合的 Skills。不直接提供功能。
-
-> ⭐ 36,009 · 🍴 2,793 · 📊 得分 90.0 · 近30天 140 commits · 中文热度 35
-> 语言: Python · License: NOASSERTION · Topics: `agent-skills, agentic-code, agentic-coding, ai-workflow-optimization, ai-workflows, anthropic`
+*Topics: agent-framework, agent-skills, agentic-ai, agentic-workflow, claude-cowork, claude-cowork-alternative, claude-cowork-free, desktop-agent*
 
 ---
 
-#### [BehiSecc/awesome-claude-skills](https://github.com/BehiSecc/awesome-claude-skills)
+### [cli](https://github.com/googleworkspace/cli)
 
-**全品类 Claude Skills 大全** · 📚 聚合/索引
+> Stars 23,638 | Forks 1,169 | 近30天 238 commits | 更新于 2026-03-31 | Rust | C端友好
 
-📖 **是什么:** 另一个活跃的 awesome list，分类细致——文档处理、数据库、AI 媒体工具包、健康助手、音乐创作、游戏开发等应有尽有。更新频率高。
+**它是什么:** <h1 align="center">gws</h1>
 
-🔧 **怎么用:** 作为发现入口浏览，找到感兴趣的 Skill 后点击链接安装。
+**核心功能:**
+- Environment Variables
+- Node.js 18+** — for `npm install` (or download a pre-built binary from GitHub Releases)
+- A Google Cloud project** — required for OAuth credentials. You can create one via the Google Cloud Console or with the `gcloud` CLI or with the `gws a
+- A Google account** with access to Google Workspace
+- OAuth consent screen: `https://console.cloud.google.com/apis/crede
 
-✨ **效果:** 覆盖面非常广的索引，特别适合探索「原来 Claude 还能做这个」的惊喜感。
+**安装/使用:** `npm install -g @googleworkspace/cli`
 
-> ⭐ 8,136 · 🍴 934 · 📊 得分 89.1 · 近30天 88 commits · 中文热度 147
-> 语言: None · License: N/A · Topics: `无`
+**外部讨论与文章:**
+- [GitHub] [JLugagne/claude-mercato](https://github.com/JLugagne/claude-mercato)
+- [GitHub] [pvydro/clik-engine](https://github.com/pvydro/clik-engine)
+- [Hacker News] [“Click to subscribe, call to cancel” is illegal, FTC says](https://www.niemanlab.org/2021/11/the-end-of-click-to-subscribe-call-to-cancel-one-of-the-news-industrys-favorite-retention-tactics-is-illegal-ftc-says/) (3192 pts, 861 comments)
+- [Hacker News] [Stimulation Clicker](https://neal.fun/stimulation-clicker/) (3082 pts, 589 comments)
+- [Hacker News] [Vulnerability in the Mac Zoom client allows malicious websites to enable camera](https://medium.com/@jonathan.leitschuh/zoom-zero-day-4-million-webcams-maybe-an-rce-just-get-them-to-visit-your-website-ac75c83f4ef5) (1937 pts, 456 comments)
 
----
+**外部热度:** HN 8211 pts | 热度分 25.0/30
 
-#### [anthropics/skills](https://github.com/anthropics/skills)
-
-**Anthropic 官方 Skills 合集** · 🛠️ 开发工具
-
-📖 **是什么:** Anthropic 官方发布的 Claude Skills 示例仓库，涵盖文档处理（docx/pdf/pptx/xlsx）、创意设计（算法艺术、画布设计）、开发工具（MCP 服务器构建、Web 前端组件）和企业通信模板等。
-
-🔧 **怎么用:** 在 Claude Code 中运行 `/plugin marketplace add anthropics/skills` 即可浏览和安装。也可在 Claude.ai 的 Skills 设置中上传使用。
-
-✨ **效果:** 安装后 Claude 会在相关场景自动调用对应 Skill，例如你说「帮我做个PPT」时会自动加载 pptx Skill 并按照专业模板输出。输出质量显著提升，格式规范、样式统一。
-
-> ⭐ 109,586 · 🍴 12,317 · 📊 得分 88.3 · 近30天 4 commits · 中文热度 22737
-> 语言: Python · License: N/A · Topics: `agent-skills`
+*Topics: agent-skills, ai-agent, automation, cli, discovery-api, gemini-cli-extension, google-admin, google-api*
 
 ---
 
-#### [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files)
+### [open-saas](https://github.com/wasp-lang/open-saas)
 
-**Planning With Files** · ⚡ 效率/自动化
+> Stars 13,761 | Forks 1,590 | 近30天 21 commits | 更新于 2026-04-01 | TypeScript | C端友好
 
-📖 **是什么:** Claude Code skill implementing Manus-style persistent markdown planning — the workflow pattern behind the $2B acquisition.
+**它是什么:** <div style="display: flex; gap: 16px; align-items: center;"> <a href="https://www.producthunt.com/products/open-saas?embed=true&utm_source=badge-top-post-topic-badge&utm_medium=badge&utm_source=badge-open&#0045;saas&#0045;2&#0045;0" target="_blank"> <img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-topic-badge.svg?post_id=1023519&theme=neutral&period=weekly&topic_id=237&t=1760520428563" alt="Open&#0032;SaaS&#0032;2&#0046;0 - Free&#0044;&#0032;open&#0045;source&#0032;SaaS&#003
 
-🔧 **怎么用:** 克隆仓库后将 Skill 文件夹复制到 Claude 的 skills 目录即可使用。
+**核心功能:**
+- 🔐 Full-stack Authentication - Email verified + social Auth in a few lines of code.
+- ⛑ End-to-end Type Safety - Type your backend functions and get inferred types on the front-end automatically, without the need to install or configure
+- 🤖 Jobs - Run cron jobs in the background or set up queues simply by defining a function in the config file.
+- 🚀 One-command Deploy - Easily deploy your DB, Server, & Client with one commaned to Railway or Fly.io via the CLI. Or deploy manually to any other hos
+- 🤝 Wasp Discord
 
-✨ **效果:** 把跨应用的重复操作变成一句话指令，大幅提升日常效率。
+**安装/使用:** `First, to install the latest version of [Wasp](https://wasp.sh/) on macOS, Linux, or Windows with WSL, run the following command:`
 
-> ⭐ 17,926 · 🍴 1,620 · 📊 得分 88.0 · 近30天 45 commits · 中文热度 8
-> 语言: Python · License: MIT · Topics: `adal, agent, agent-skills, agents, antigravity, claude`
+**兼容:** Claude Code, Cursor, Codex, OpenCode
 
----
+**外部讨论与文章:**
+- [Hacker News] [Show HN: Open SaaS – An open-source alternative to paid boilerplate starters](https://github.com/wasp-lang/open-saas) (163 pts, 71 comments)
 
-#### [yusufkaraaslan/Skill_Seekers](https://github.com/yusufkaraaslan/Skill_Seekers)
+**外部热度:** HN 163 pts | 热度分 15.0/30
 
-**Skill Seekers** · 🛠️ 开发工具
-
-📖 **是什么:** Convert documentation websites, GitHub repositories, and PDFs into Claude AI skills with automatic conflict detection
-
-🔧 **怎么用:** 克隆仓库后将 Skill 文件夹复制到 Claude 的 skills 目录即可使用。
-
-✨ **效果:** 让 Claude 在编码任务中遵循最佳实践，提升代码质量和开发效率。
-
-> ⭐ 12,192 · 🍴 1,221 · 📊 得分 88.0 · 近30天 49 commits · 中文热度 8
-> 语言: Python · License: MIT · Topics: `ai-tools, ast-parser, automation, claude-ai, claude-skills, code-analysis`
+*Topics: ai, authentication, aws-s3, boilerplate, chatgpt, full-stack, google-auth, hacktoberfest*
 
 ---
 
-#### [Orchestra-Research/AI-Research-SKILLs](https://github.com/Orchestra-Research/AI-Research-SKILLs)
+### [agents](https://github.com/wshobson/agents)
 
-**Ai Research Skills** · 🛠️ 开发工具
+> Stars 32,854 | Forks 3,577 | 近30天 49 commits | 更新于 2026-04-01 | Python | C端友好
 
-📖 **是什么:** Comprehensive open-source library of AI research and engineering skills for any AI model. Package the skills and your claude code/codex/gemini agent will be an AI research agent with full horsepower. Maintained by Orchestra Research. 包含 87+ 个 Skill。
+**它是什么:** > \1 — Three-tier model strategy for optimal performance
 
-🔧 **怎么用:** 克隆仓库后将 Skill 文件夹复制到 Claude 的 skills 目录即可使用。
+**核心功能:**
+- Granular Plugin Architecture: 72 focused plugins optimized for minimal token usage
+- Comprehensive Tooling: 79 development tools including test generation, scaffolding, and security scanning
+- 100% Agent Coverage: All plugins include specialized agents
+- Agent Skills: 146 specialized skills following for progressive disclosure and token efficiency
+- Clear Organization: 23 categories with 1-6 plugins each for easy discovery
 
-✨ **效果:** 让 Claude 在编码任务中遵循最佳实践，提升代码质量和开发效率。
+**安装/使用:** `/plugin marketplace add wshobson/agents`
 
-> ⭐ 6,046 · 🍴 468 · 📊 得分 86.9 · 近30天 56 commits · 中文热度 170
-> 语言: TeX · License: MIT · Topics: `ai, ai-research, claude, claude-code, claude-skills, codex`
+**兼容:** Claude Code
 
----
+**外部讨论与文章:**
+- [GitHub] [crowdin/skills](https://github.com/crowdin/skills)
+- [GitHub] [JLugagne/claude-mercato](https://github.com/JLugagne/claude-mercato)
+- [Hacker News] [Huginn: Create agents that monitor and act on your behalf](https://github.com/huginn/huginn) (1303 pts, 143 comments)
 
-#### [travisvn/awesome-claude-skills](https://github.com/travisvn/awesome-claude-skills)
+**外部热度:** HN 1303 pts | 热度分 15.0/30
 
-**Awesome Claude Skills 精选索引** · 🎨 创意/写作/设计
-
-📖 **是什么:** 社区维护的精选 Claude Skills 列表，按类别分类整理，附带安装方法和使用场景说明。更新频率高，是发现新 Skill 的首选入口。
-
-🔧 **怎么用:** 作为索引使用——浏览列表找到感兴趣的 Skill，然后点链接跳转到对应仓库安装。
-
-✨ **效果:** 不是一个直接使用的工具，而是一个「导航站」。定期浏览可以发现最新最热门的 Skills。
-
-> ⭐ 10,411 · 🍴 1,023 · 📊 得分 86.8 · 近30天 1 commits · 中文热度 147
-> 语言: None · License: N/A · Topics: `agentic-coding, anthropic, awesome, awesome-list, awesome-lists, claude`
+*Topics: agents, anthropic, anthropic-claude, automation, claude, claude-code, claude-code-cli, claude-code-commands*
 
 ---
 
-#### [ComposioHQ/awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills)
+### [agentskills](https://github.com/agentskills/agentskills)
 
-**Composio 跨应用自动化 Skills** · ⚡ 效率/自动化
+> Stars 14,933 | Forks 878 | 近30天 38 commits | 更新于 2026-04-02 | Python | C端友好
 
-📖 **是什么:** 由 Composio 团队策划的 Skills 列表，特色是跨应用自动化——让 Claude 直接操作 Gmail、Slack、Asana、Jira 等 500+ 应用。包含连接器插件和操作指南。
+**它是什么:** \1 are a simple, open format for giving agents new capabilities and expertise.
 
-🔧 **怎么用:** 安装 connect-apps 插件后，Claude 可以直接发邮件、创建 Issue、发 Slack 消息。需要 Composio API key（免费）。
+**核心功能:**
+- Documentation** — Guides and tutorials
+- Specification** — Format details
+- Example Skills** — See what's possible
+- Discord** — Join the discussion!
 
-✨ **效果:** 把 Claude 变成一个「全能行政助手」——「帮我在 Asana 创建一个任务，然后发 Slack 通知团队」这种跨应用操作都能一句话搞定。
+**安装/使用:** `- **[Documentation](https://agentskills.io)** — Guides and tutorials - **[Specification](https://agentskills.io/specification)** — Format details - **[Example Skills](https://github.com/anthropics/skills)** — See what's possible`
 
-> ⭐ 50,737 · 🍴 5,307 · 📊 得分 85.6 · 近30天 0 commits · 中文热度 147
-> 语言: Python · License: N/A · Topics: `agent-skills, ai-agents, antigravity, automation, claude, claude-code`
+**外部讨论与文章:**
+- [GitHub] [trancong12102/agentskills](https://github.com/trancong12102/agentskills)
+- [GitHub] [mukul975/Anthropic-Cybersecurity-Skills](https://github.com/mukul975/Anthropic-Cybersecurity-Skills)
+- [Hacker News] [Agent Skills](https://agentskills.io/home) (544 pts, 260 comments)
 
----
+**外部热度:** HN 544 pts | 热度分 15.0/30
 
-#### [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official)
-
-**Claude Plugins Official** · 🛠️ 开发工具
-
-📖 **是什么:** Official, Anthropic-managed directory of high quality Claude Code Plugins. 兼容: Claude Code。
-
-🔧 **怎么用:** 安装命令: `/plugin install {plugin-name}@claude-plugins-official``
-
-✨ **效果:** 让 Claude 在编码任务中遵循最佳实践，提升代码质量和开发效率。
-
-> ⭐ 15,845 · 🍴 1,759 · 📊 得分 85.0 · 近30天 133 commits · 中文热度 19
-> 语言: Python · License: N/A · Topics: `claude-code, mcp, skills`
+*Topics: agent-skills*
 
 ---
 
-#### [Jeffallan/claude-skills](https://github.com/Jeffallan/claude-skills)
+### [skills](https://github.com/trailofbits/skills)
 
-**Claude Skills** · 🛠️ 开发工具
+> Stars 4,254 | Forks 377 | 近30天 12 commits | 更新于 2026-04-01 | Python | C端友好
 
-📖 **是什么:** 66 Specialized Skills for Full-Stack Developers. Transform Claude Code into your expert pair programmer. 包含 20+ 个 Skill。 兼容: Claude Code。
+**它是什么:** A Claude Code plugin marketplace from Trail of Bits providing skills to enhance AI-assisted security analysis, testing, and development workflows.
 
-🔧 **怎么用:** 安装命令: `/plugin marketplace add jeffallan/claude-skills`
+**安装/使用:** `/plugin marketplace add trailofbits/skills`
 
-✨ **效果:** 让 Claude 在编码任务中遵循最佳实践，提升代码质量和开发效率。
+**兼容:** Claude Code, Codex
 
-> ⭐ 7,593 · 🍴 544 · 📊 得分 84.9 · 近30天 13 commits · 中文热度 22725
-> 语言: Python · License: MIT · Topics: `ai-agents, claude, claude-code, claude-marketplace, claude-skills`
+**外部讨论与文章:**
+- [GitHub] [Darios-mom-used-npm-birth-force/claude-code-is-alans-secret-sauce](https://github.com/Darios-mom-used-npm-birth-force/claude-code-is-alans-secret-sauce)
+- [GitHub] [lipex360x/claude-skills-library](https://github.com/lipex360x/claude-skills-library)
+- [Hacker News] [Tech sector job interviews assess anxiety, not software skills: study](https://news.ncsu.edu/2020/07/tech-job-interviews-anxiety/) (1782 pts, 1141 comments)
+- [Hacker News] [My dad's resume and skills from 1980](https://github.com/runvnc/dadsresume) (1482 pts, 583 comments)
+
+**外部热度:** HN 3264 pts | 热度分 20.0/30
+
+*Topics: agent-skills*
 
 ---
 
-## 📈 趋势洞察
+### [claude-mem](https://github.com/thedotmack/claude-mem)
 
-**类别分布:**
-- 🛠️ 开发工具: 8 个
-- ⚡ 效率/自动化: 3 个
-- 🎨 创意/写作/设计: 2 个
-- 📚 聚合/索引: 2 个
+> Stars 44,776 | Forks 3,384 | 近30天 53 commits | 更新于 2026-04-02 | TypeScript | C端友好
+
+**它是什么:** <h1 align="center"> <br> <a href="https://github.com/thedotmack/claude-mem"> <picture> <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/thedotmack/claude-mem/main/docs/public/claude-mem-logo-for-dark-mode.webp"> <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/thedotmack/claude-mem/main/docs/public/claude-mem-logo-for-light-mode.webp"> <img src="https://raw.githubusercontent.com/thedotmack/claude-mem/main/docs/public/cl
+
+**安装/使用:** `/plugin marketplace add thedotmack/claude-mem`
+
+**兼容:** Claude Code
+
+**外部讨论与文章:**
+- [GitHub] [kaicmurilo/gemini-skill-claude-mem](https://github.com/kaicmurilo/gemini-skill-claude-mem)
+- [GitHub] [Mboloi/claude-memory-starter-kit](https://github.com/Mboloi/claude-memory-starter-kit)
+- [Hacker News] [Claude’s memory architecture is the opposite of ChatGPT’s](https://www.shloked.com/writing/claude-memory) (448 pts, 236 comments)
+
+**外部热度:** HN 448 pts | 热度分 15.0/30
+
+*Topics: ai, ai-agents, ai-memory, anthropic, artificial-intelligence, chromadb, claude, claude-agent-sdk*
+
+---
+
+### [claude-code-tips](https://github.com/ykdojo/claude-code-tips)
+
+> Stars 7,094 | Forks 492 | 近30天 30 commits | 更新于 2026-04-02 | JavaScript | C端友好
+
+**它是什么:** Here are my tips for getting the most out of Claude Code, including a custom status line script, cutting the system prompt in half, using Gemini CLI as Claude Code's minion, and Claude Code running itself in a container. Also includes the \1.
+
+**核心功能:**
+- Tip 0: Customize your status line
+- Tip 1: Learn a few essential slash commands
+- Tip 2: Talk to Claude Code with your voice
+- Tip 3: Break down large problems into smaller ones
+- Tip 4: Using Git and GitHub CLI like a pro
+
+**安装/使用:** 将 Skill 文件夹放入 Claude 的 skills 目录，或参考仓库 README 的安装说明。
+
+**兼容:** Claude Code, Gemini CLI
+
+**外部讨论与文章:**
+- [GitHub] [4riel/cc-bible](https://github.com/4riel/cc-bible)
+- [GitHub] [ccwriter369-beep/claude-skill-claude-code-tips](https://github.com/ccwriter369-beep/claude-skill-claude-code-tips)
+- [Hacker News] [Claude Code Tips](https://agenticcoding.substack.com/p/32-claude-code-tips-from-basics-to) (9 pts, 2 comments)
+- [Hacker News] [Claude Code Tips](https://github.com/ykdojo/claude-code-tips) (3 pts, 1 comments)
+
+**外部热度:** HN 12 pts | 热度分 12.4/30
+
+*Topics: agentic, agentic-ai, agentic-coding, agentic-workflow, ai, claude, claude-ai, claude-code*
+
+---
+
+### [ui](https://github.com/shadcn-ui/ui)
+
+> Stars 111,378 | Forks 8,399 | 近30天 263 commits | 更新于 2026-04-02 | TypeScript | C端友好
+
+**它是什么:** A set of beautifully designed components that you can customize, extend, and build on. Start here then make it your own. Open Source. Open Code. \1.
+
+**安装/使用:** 将 Skill 文件夹放入 Claude 的 skills 目录，或参考仓库 README 的安装说明。
+
+**外部讨论与文章:**
+- [GitHub] [1187645576-gif/ui-review-skill](https://github.com/1187645576-gif/ui-review-skill)
+- [GitHub] [Yawnspe/custom-plugin-devops](https://github.com/Yawnspe/custom-plugin-devops)
+- [Hacker News] [Sanding UI](https://blog.jim-nielsen.com/2024/sanding-ui/) (1300 pts, 400 comments)
+- [Hacker News] [I am an Uighur who faced China’s concentration camps](https://www.varsity.co.uk/interviews/19990) (1242 pts, 536 comments)
+- [Hacker News] [Show HN: Clippy – 90s UI for local LLMs](https://felixrieseberg.github.io/clippy/) (1122 pts, 275 comments)
+
+**外部热度:** HN 3664 pts | 热度分 25.0/30
+
+*Topics: base-ui, components, laravel, nextjs, radix-ui, react, shadcn, tailwindcss*
+
+---
+
+## 开发者工具 (4 个)
+
+### [claude-skills](https://github.com/Jeffallan/claude-skills)
+
+> Stars 7,596 | Forks 544 | 近30天 13 commits | 更新于 2026-03-23 | Python
+
+**它是什么:** <p align="center"> <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,14,25,27&height=200&section=header&text=Claude%20Skills&fontSize=80&fontColor=ffffff&animation=fadeIn&fontAlignY=35&desc=66%20Skills%20%E2%80%A2%209%20Workflows%20%E2%80%A2%20Built%20for%20Full-Stack%20Devs&descSize=20&descAlignY=55" width="100%"/> </p>
+
+**核心功能:**
+- \1 - Installation and first steps
+- \1 - Skill reference and decision trees
+- \1 - Context engineering with `/common-ground`
+- \1 - Project workflow commands guide
+- \1 - Atlassian MCP server setup
+
+**安装/使用:** `/plugin marketplace add jeffallan/claude-skills`
+
+**兼容:** Claude Code
+
+**外部讨论与文章:**
+- [GitHub] [lipex360x/claude-skills-library](https://github.com/lipex360x/claude-skills-library)
+- [GitHub] [Shada01245/the-unofficial-swift-programming-language-skill](https://github.com/Shada01245/the-unofficial-swift-programming-language-skill)
+- [Hacker News] [Claude Skills are awesome, maybe a bigger deal than MCP](https://simonwillison.net/2025/Oct/16/claude-skills/) (738 pts, 370 comments)
+
+**外部热度:** HN 738 pts | 热度分 15.0/30
+
+*Topics: ai-agents, claude, claude-code, claude-marketplace, claude-skills*
+
+---
+
+### [claude-skills](https://github.com/Jeffallan/claude-skills)
+
+> Stars 7,596 | Forks 544 | 近30天 13 commits | 更新于 2026-03-23 | Python
+
+**它是什么:** <p align="center"> <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,14,25,27&height=200&section=header&text=Claude%20Skills&fontSize=80&fontColor=ffffff&animation=fadeIn&fontAlignY=35&desc=66%20Skills%20%E2%80%A2%209%20Workflows%20%E2%80%A2%20Built%20for%20Full-Stack%20Devs&descSize=20&descAlignY=55" width="100%"/> </p>
+
+**核心功能:**
+- \1 - Installation and first steps
+- \1 - Skill reference and decision trees
+- \1 - Context engineering with `/common-ground`
+- \1 - Project workflow commands guide
+- \1 - Atlassian MCP server setup
+
+**安装/使用:** `/plugin marketplace add jeffallan/claude-skills`
+
+**兼容:** Claude Code
+
+**外部讨论与文章:**
+- [GitHub] [lipex360x/claude-skills-library](https://github.com/lipex360x/claude-skills-library)
+- [GitHub] [Shada01245/the-unofficial-swift-programming-language-skill](https://github.com/Shada01245/the-unofficial-swift-programming-language-skill)
+- [Hacker News] [Claude Skills are awesome, maybe a bigger deal than MCP](https://simonwillison.net/2025/Oct/16/claude-skills/) (738 pts, 370 comments)
+
+**外部热度:** HN 738 pts | 热度分 15.0/30
+
+*Topics: ai-agents, claude, claude-code, claude-marketplace, claude-skills*
+
+---
+
+### [AI-Research-SKILLs](https://github.com/Orchestra-Research/AI-Research-SKILLs)
+
+> Stars 6,050 | Forks 468 | 近30天 56 commits | 更新于 2026-04-01 | TeX
+
+**它是什么:** > \1
+
+**核心功能:**
+- Path Towards AI Research Agent
+- Available AI Research Engineering Skills
+- Repository Structure
+- Autonomous Research - The \1 skill orchestrates the entire research workflow using a two-loop architecture, routing to domain skills as 
+- Specialized Expertise - Each domain skill provides deep, production-ready knowledge of a specific framework (Megatron-LM, vLLM, TRL, etc.)
+
+**安装/使用:** `/plugin marketplace add orchestra-research/AI-research-SKILLs`
+
+**兼容:** Claude Code
+
+**外部讨论与文章:**
+- [GitHub] [markli1hoshipu/embody-ai-research-skills](https://github.com/markli1hoshipu/embody-ai-research-skills)
+- [Hacker News] [CC can't help my AI research exp – so I open-source this "AI research skills"](https://github.com/zechenzhangAGI/claude-ai-research-skills) (1 pts, 1 comments)
+- [Hacker News] [Claude can now run ML research experiments for you](https://github.com/zechenzhangAGI/AI-research-SKILLs) (1 pts, 0 comments)
+
+**外部热度:** HN 2 pts | 热度分 10.4/30
+
+*Topics: ai, ai-research, claude, claude-code, claude-skills, codex, gemini, gpt-5*
+
+---
+
+### [preline](https://github.com/htmlstreamofficial/preline)
+
+> Stars 6,285 | Forks 400 | 近30天 1 commits | 更新于 2026-03-19 | HTML
+
+**它是什么:** \1](https://preline.co)
+
+**核心功能:**
+- 220+ free Tailwind CSS blocks and sections
+- 5 free Tailwind CSS templates
+- 27 headless Tailwind CSS plugins
+- Full documentation, Figma, themes, and agent skills
+
+**安装/使用:** `npx skills add htmlstreamofficial/preline`
+
+**兼容:** Claude Code, Cursor, Gemini CLI
+
+**外部讨论与文章:**
+- [Hacker News] [Show HN: Preline UI – Open-Source Tailwind CSS Components](https://preline.co) (64 pts, 8 comments)
+- [Hacker News] [Show HN: Preline UI Figma – largest free design system for Figma](https://www.figma.com/community/file/1179068859697769656) (2 pts, 0 comments)
+
+**外部热度:** HN 77 pts | 热度分 20.0/30
+
+*Topics: agent-skills, css, html, javascript, tailwindcss, tailwindcss-plugin, typescript, ui-components*
+
+---
+
+## 本期洞察
+
+**新发现 10 个 Skill**，其中值得重点关注的:
+- **[nanoclaw](https://github.com/qwibitai/nanoclaw)** (score 94.0) - A lightweight alternative to OpenClaw that runs in containers for security. Conn
+- **[hive](https://github.com/aden-hive/hive)** (score 93.0) - Outcome driven agent development framework and runtime harness
+- **[eigent](https://github.com/eigent-ai/eigent)** (score 92.0) - Eigent: The Open Source Cowork Desktop to Unlock Your Exceptional Productivity. 
 
 **近30天最活跃:**
-- [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills) — 326 commits
-- [hesreallyhim/awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) — 140 commits
-- [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) — 133 commits
+- [hive](https://github.com/aden-hive/hive) - 945 commits
+- [nanoclaw](https://github.com/qwibitai/nanoclaw) - 404 commits
+- [ui](https://github.com/shadcn-ui/ui) - 263 commits
 
-**中文社区最受关注:**
-- [anthropics/skills](https://github.com/anthropics/skills) — 中文相关结果: 22737
-- [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills) — 中文相关结果: 22725
-- [Jeffallan/claude-skills](https://github.com/Jeffallan/claude-skills) — 中文相关结果: 22725
+**外部热议 (HN/Dev.to/中文RSS):**
+- [nanoclaw](https://github.com/qwibitai/nanoclaw) - HN 865pts, 3 篇文章
+- [hive](https://github.com/aden-hive/hive) - HN 911pts, 3 篇文章
+- [cli](https://github.com/googleworkspace/cli) - HN 8211pts, 3 篇文章
+- [ui](https://github.com/shadcn-ui/ui) - HN 3664pts, 3 篇文章
+- [eigent](https://github.com/eigent-ai/eigent) - HN 460pts, 2 篇文章
 
 ---
-*Generated by Claude Skills Scout v2 · 2026-04-03*
+*Claude Skills Scout v3 | 2026-04-03 | github.com*

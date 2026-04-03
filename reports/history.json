@@ -14,13 +14,13 @@
   "thedotmack/claude-mem": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 1,
+    "appearances": 2,
     "best_rank": 3
   },
   "wshobson/agents": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 1,
+    "appearances": 2,
     "best_rank": 4
   },
   "VoltAgent/awesome-agent-skills": {
@@ -62,8 +62,8 @@
   "Orchestra-Research/AI-Research-SKILLs": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
-    "appearances": 1,
-    "best_rank": 11
+    "appearances": 2,
+    "best_rank": 10
   },
   "travisvn/awesome-claude-skills": {
     "first_seen": "2026-04-03",
@@ -84,6 +84,66 @@
     "best_rank": 14
   },
   "Jeffallan/claude-skills": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 3,
+    "best_rank": 7
+  },
+  "qwibitai/nanoclaw": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 1
+  },
+  "aden-hive/hive": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 2
+  },
+  "eigent-ai/eigent": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 3
+  },
+  "googleworkspace/cli": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 4
+  },
+  "wasp-lang/open-saas": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 5
+  },
+  "agentskills/agentskills": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 9
+  },
+  "trailofbits/skills": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 11
+  },
+  "htmlstreamofficial/preline": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 12
+  },
+  "ykdojo/claude-code-tips": {
+    "first_seen": "2026-04-03",
+    "last_seen": "2026-04-03",
+    "appearances": 1,
+    "best_rank": 14
+  },
+  "shadcn-ui/ui": {
     "first_seen": "2026-04-03",
     "last_seen": "2026-04-03",
     "appearances": 1,
