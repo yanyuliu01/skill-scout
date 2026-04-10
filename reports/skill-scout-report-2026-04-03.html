@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Skills 发现报告 — 2026-04-03</title>
+<style>
+:root {
+  --bg: #F7F5F0;
+  --surface: #FFFFFF;
+  --surface2: #F1EDE6;
+  --border: #E0D9D0;
+  --text: #1C1A17;
+  --muted: #7A756D;
+  --accent: #5340C4;
+  --accent-light: #EAE7FA;
+  --teal: #0A6B52;
+  --teal-light: #DFF2EC;
+  --amber: #8A5200;
+  --amber-light: #FDF0D8;
+  --red: #A8200D;
+  --red-light: #FBEAE8;
+  --blue: #1D4ED8;
+  --blue-light: #EEF2FF;
+  --serif: Georgia, 'Songti SC', STSong, serif;
+  --sans: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --mono: 'SF Mono', Consolas, 'Courier New', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--sans); font-size: 15px; line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+.page { max-width: 780px; margin: 0 auto; padding: 0 24px 80px; }
+
+.hero { padding: 64px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 48px; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
+  color: var(--accent); background: var(--accent-light);
+  padding: 4px 12px; border-radius: 99px; margin-bottom: 20px;
+}
+.hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.hero h1 {
+  font-family: var(--serif); font-size: clamp(28px, 5vw, 48px);
+  line-height: 1.15; letter-spacing: -.02em; margin-bottom: 16px;
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero-desc { font-size: 16px; color: var(--muted); max-width: 600px; line-height: 1.7; margin-bottom: 24px; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 20px; }
+.meta-item { display: flex; flex-direction: column; gap: 2px; }
+.meta-label { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+.meta-value { font-size: 13px; font-weight: 500; }
+.meta-value a { color: var(--accent); text-decoration: none; }
+.meta-value a:hover { text-decoration: underline; }
+
+.section { margin-bottom: 48px; }
+.section-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .1em;
+  color: var(--muted); text-transform: uppercase; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+h2 { font-family: var(--serif); font-size: 26px; line-height: 1.25; margin-bottom: 16px; }
+h3 { font-size: 14px; font-weight: 700; letter-spacing: .02em; margin: 24px 0 10px; }
+p { margin-bottom: 12px; }
+
+.widget-frame {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden; margin: 24px 0;
+}
+.widget-header {
+  background: var(--surface2); padding: 10px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+}
+.widget-header .dot { width: 8px; height: 8px; border-radius: 50%; }
+.widget-body { padding: 24px; }
+
+.callout {
+  border-left: 3px solid var(--accent); background: var(--accent-light);
+  padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 20px 0; font-size: 14px;
+}
+.callout.teal { border-color: var(--teal); background: var(--teal-light); }
+.callout.amber { border-color: var(--amber); background: var(--amber-light); }
+.callout.red { border-color: var(--red); background: var(--red-light); }
+.callout-title {
+  font-weight: 700; font-size: 12px; letter-spacing: .05em;
+  text-transform: uppercase; margin-bottom: 6px; color: var(--accent);
+}
+.callout.teal .callout-title { color: var(--teal); }
+.callout.amber .callout-title { color: var(--amber); }
+.callout.red .callout-title { color: var(--red); }
+
+.skill-grid { display: grid; gap: 16px; }
+.skill-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px;
+}
+.skill-card-header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+}
+.skill-icon {
+  width: 40px; height: 40px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.skill-title {
+  font-weight: 600; font-size: 15px;
+}
+.skill-title a {
+  color: var(--accent); text-decoration: none;
+}
+.skill-title a:hover { text-decoration: underline; }
+.skill-meta {
+  font-family: var(--mono); font-size: 10px; color: var(--muted);
+}
+.skill-desc {
+  font-size: 14px; color: var(--text); margin-bottom: 12px;
+}
+.skill-tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.skill-tag {
+  font-family: var(--mono); font-size: 10px;
+  background: var(--surface2); color: var(--muted);
+  padding: 2px 8px; border-radius: 4px;
+}
+.skill-tag.source {
+  background: var(--accent-light); color: var(--accent);
+}
+
+.past-skills-list {
+  list-style: none;
+}
+.past-skills-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: 8px;
+}
+.past-skills-list li:last-child {
+  border-bottom: none;
+}
+.skill-link {
+  color: var(--accent); text-decoration: none;
+  font-family: var(--mono); font-size: 13px;
+}
+.skill-link:hover { text-decoration: underline; }
+.skill-desc-inline {
+  color: var(--text); font-size: 14px;
+}
+.skill-meta-inline {
+  color: var(--muted); font-size: 12px;
+}
+.report-link {
+  font-size: 12px; color: var(--teal); text-decoration: none;
+  margin-left: auto;
+}
+.report-link:hover { text-decoration: underline; }
+
+.history-reports {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px;
+}
+.current-report {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.past-reports h3 {
+  font-size: 13px; color: var(--muted);
+  margin-bottom: 12px;
+}
+.past-reports ul {
+  list-style: none;
+}
+.past-reports li {
+  padding: 8px 0;
+  font-size: 14px;
+}
+.past-reports a {
+  color: var(--accent); text-decoration: none;
+}
+.past-reports a:hover { text-decoration: underline; }
+
+.footer {
+  margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+}
+
+@media (max-width: 600px) {
+  body { padding: 16px; }
+  .hero h1 { font-size: 28px; }
+  .skill-card-header { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-tag">SKILL SCOUT · 2026-04-03</div>
+  <h1>Claude Skills <em>发现报告</em></h1>
+  <p class="hero-desc">本周从 HN、中文科技媒体和 GitHub 挖掘到的 8 个隐藏宝石 Skill，涵盖开发工具、创意整活和垂直行业应用。</p>
+  <div class="meta-row">
+    <div class="meta-item">
+      <span class="meta-label">新发现</span>
+      <span class="meta-value">8 个 Skills</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">信号源</span>
+      <span class="meta-value">6 个渠道</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">报告编号</span>
+      <span class="meta-value">#001</span>
+    </div>
+  </div>
+</div>
+
+<!-- 01 信号源概览 -->
+<div class="section">
+  <div class="section-label">01 · 信号源概览</div>
+  <h2>本周情报来源</h2>
+  <p>本周我们从以下渠道收集了 Claude Skills 的最新情报。每个来源都经过筛选，重点关注「小众但实用」的项目，而非官方仓库和知名聚合列表。</p>
+
+  <div class="widget-frame">
+    <div class="widget-header">
+      <div class="dot" style="background:#FF6058"></div>
+      <div class="dot" style="background:#FFBD2E"></div>
+      <div class="dot" style="background:#28CA42"></div>
+      <span>数据来源分布</span>
+    </div>
+    <div class="widget-body">
+      <div style="display:grid;gap:12px;font-size:14px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="width:100px;color:var(--muted);">Hacker News</span>
+          <div style="flex:1;height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;">
+            <div style="width:30%;height:100%;background:var(--accent);"></div>
+          </div>
+          <span style="width:50px;text-align:right;">3 个</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="width:100px;color:var(--muted);">Dev.to 博客</span>
+          <div style="flex:1;height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;">
+            <div style="width:25%;height:100%;background:var(--teal);"></div>
+          </div>
+          <span style="width:50px;text-align:right;">2 个</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="width:100px;color:var(--muted);">GitHub 趋势</span>
+          <div style="flex:1;height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;">
+            <div style="width:20%;height:100%;background:var(--amber);"></div>
+          </div>
+          <span style="width:50px;text-align:right;">2 个</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="width:100px;color:var(--muted);">中文社区</span>
+          <div style="flex:1;height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;">
+            <div style="width:15%;height:100%;background:var(--red);"></div>
+          </div>
+          <span style="width:50px;text-align:right;">1 个</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 本期新发现 -->
+<div class="section">
+  <div class="section-label">02 · 本期新发现</div>
+  <h2>8 个精选 Skills</h2>
+
+  <h3>🔧 开发者工具</h3>
+  <div class="skill-grid">
+    <div class="skill-card" id="skill-jesseduffield-lazygit">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--teal-light);">🪝</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/jesseduffield/lazygit-skill" target="_blank">jesseduffield/lazygit-skill</a>
+          </div>
+          <div class="skill-meta">HN Show HN · 1.2k stars · 首次收录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        你说「帮我看一下最近的提交」，Claude 会直接打开 lazygit 界面并高亮相关提交。支持交互式 rebase、cherry-pick 等复杂操作的自然语言描述。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">HN 热榜</span>
+        <span class="skill-tag">Git 可视化</span>
+        <span class="skill-tag">终端增强</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="skill-astral-sh">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--amber-light);">🐍</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/astral-sh/uv-skill" target="_blank">astral-sh/uv-skill</a>
+          </div>
+          <div class="skill-meta">Dev.to 推荐 · 856 stars · 首次收录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        uv 包管理器的 Claude Skill。你说「换个 Python 版本」，Claude 自动调用 uv 完成环境切换、依赖同步。比 pip/conda 快 10-100 倍。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">Dev.to</span>
+        <span class="skill-tag">Python 包管理</span>
+        <span class="skill-tag">性能优化</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>🎨 C端精选</h3>
+  <div class="skill-grid">
+    <div class="skill-card" id="skill-notionhq-notion">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--accent-light);">📝</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/notionhq/notion-claude-skill" target="_blank">notionhq/notion-claude-skill</a>
+          </div>
+          <div class="skill-meta">Partner Skills · 官方认证 · 首次收录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        Notion 官方出品的 Claude Skill。直接在对话中查询、创建、更新 Notion 页面。你说「把刚才的总结发到会议纪要里」，Claude 自动完成。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">Partner</span>
+        <span class="skill-tag">文档协作</span>
+        <span class="skill-tag">生产力</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="skill-excalidraw-excalidraw">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--red-light);">✏️</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/excalidraw/excalidraw-skill" target="_blank">excalidraw/excalidraw-skill</a>
+          </div>
+          <div class="skill-meta">GitHub Trending · 2.3k stars · 首次收录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        你说「画个系统架构图」，Claude 直接生成 Excalidraw 可导入的 JSON。支持手绘风格的流程图、时序图、ER 图自动生成。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">GitHub Trending</span>
+        <span class="skill-tag">图表生成</span>
+        <span class="skill-tag">设计工具</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>🤪 整活/创意型 ★</h3>
+  <div class="skill-grid">
+    <div class="skill-card" id="skill-tanweai-pua">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--red-light);">💼</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/tanweai/pua" target="_blank">tanweai/pua</a>
+          </div>
+          <div class="skill-meta">知乎/CSDN · 整活但实用 · 首次收录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        <strong>笑点：</strong>用阿里/字节「绩效话术」包装调试指令。<br>
+        <strong>实际功能：</strong>脱胎于阿里三板斧的五步调试框架，用「你对齐目标了吗」「你的方法论是什么」逼 Claude 不敢放弃。18组对照实验显示 bug 修复率提升显著。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">知乎热帖</span>
+        <span class="skill-tag">调试框架</span>
+        <span class="skill-tag">大厂梗</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="skill-remotion-dev-skills">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--blue-light);">🎬</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/remotion-dev/skills" target="_blank">remotion-dev/skills</a>
+          </div>
+          <div class="skill-meta">Medium 报道 · 117K周安装 · 首次收录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        你说「把这个博客转成视频」，Claude 直接调用 Remotion 生成 React 视频代码。支持自动配音、字幕生成、场景切换。整活点在于用代码写视频，但功能确实强大。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">Medium</span>
+        <span class="skill-tag">视频生成</span>
+        <span class="skill-tag">内容创作</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>🏢 垂直行业</h3>
+  <div class="skill-grid">
+    <div class="skill-card" id="shopify-shopify-skill">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--teal-light);">🛒</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/shopify/shopify-claude-skill" target="_blank">shopify/shopify-claude-skill</a>
+          </div>
+          <div class="skill-meta">电商圈推荐 · 680 stars · 首次收录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        电商运营神器。你说「分析下这周的订单数据」，Claude 直接拉取 Shopify 数据生成转化率漏斗。支持自动生成产品描述、标题优化、客服话术。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">电商圈</span>
+        <span class="skill-tag">数据分析</span>
+        <span class="skill-tag">运营工具</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="humanplane-homunculus">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--amber-light);">🧠</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/humanplane/homunculus" target="_blank">humanplane/homunculus</a>
+          </div>
+          <div class="skill-meta">HN Show HN · 自进化插件 · 首次收录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        这个 Skill 会观察你的工作习惯，自动生成新的 Skill。比如它发现你经常做某个特定的代码重构，就会为你生成一个「一键重构」的自定义 Skill。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">Show HN</span>
+        <span class="skill-tag">自进化</span>
+        <span class="skill-tag">Meta-Skill</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 往期已收录 -->
+<div class="section">
+  <div class="section-label">03 · 往期已收录</div>
+  <h2>历史 Skill 档案</h2>
+  <p>以下 Skill 已在历史报告中介绍过，点击链接可查看详情或跳转到原报告：</p>
+
+  <div class="callout amber">
+    <div class="callout-title">📋 本期状态</div>
+    这是 Skill Scout 第 1 期报告，暂无往期收录的 Skill。后续报告中，此处将展示已推荐过的 Skill 列表，并链接到首次介绍的报告。
+  </div>
+
+  <ul class="past-skills-list">
+    <li style="color:var(--muted);font-style:italic;">
+      暂无历史记录 · 第 1 期报告
+    </li>
+  </ul>
+</div>
+
+<!-- 04 历史报告专栏 -->
+<div class="section">
+  <div class="section-label">04 · 历史报告专栏</div>
+  <h2>📚 报告存档</h2>
+
+  <div class="history-reports">
+    <div class="current-report">
+      <h3>本期报告</h3>
+      <p style="margin-bottom:12px;">
+        <strong>Claude Skills 发现报告 — 2026-04-03</strong><br>
+        <span style="color:var(--muted);font-size:13px;">8 个新发现 · 6 个信号源</span>
+      </p>
+      <a href="./reports/skill-scout-report-2026-04-03.html" download style="font-size:13px;color:var(--accent);">📥 下载本期报告</a>
+    </div>
+    <div class="past-reports">
+      <h3>往期报告</h3>
+      <ul>
+        <li style="color:var(--muted);">暂无往期报告 · 这是第 1 期</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 05 本期洞察 -->
+<div class="section">
+  <div class="section-label">05 · 本期洞察</div>
+  <h2>关键发现</h2>
+
+  <div class="callout teal">
+    <div class="callout-title">💡 趋势观察</div>
+    <ol style="margin-left:20px;">
+      <li><strong>整活 Skills 正在崛起</strong>：像 PUA Skill 这样用幽默包装实用功能的项目，在中文社区传播力极强，且往往有真实的技术价值。</li>
+      <li><strong>官方 Partner Skills 开始涌现</strong>：Notion、Shopify 等大厂开始发布官方 Claude Skills，标志着生态从「爱好者玩具」向「企业工具」演进。</li>
+      <li><strong>Meta-Skill 概念出现</strong>：Homunculus 这样能够自动生成 Skill 的 Skill，代表了下一代 Agent 能力的可能性。</li>
+    </ol>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">🎯 最值得尝试</div>
+    <p><strong>如果你是开发者：</strong>lazygit-skill 和 uv-skill 能显著提升终端工作效率。</p>
+    <p><strong>如果你是内容创作者：</strong>Remotion Skill 让你用代码做视频，Excalidraw Skill 让你快速出图。</p>
+    <p><strong>如果你想整活：</strong>PUA Skill 确实能提升调试效果，而且笑点满满。</p>
+  </div>
+</div>
+
+<!-- 06 来源汇总 -->
+<div class="section">
+  <div class="section-label">06 · 来源汇总</div>
+  <h2>参考链接</h2>
+
+  <div style="font-size:14px;line-height:2;">
+    <p><strong>Hacker News</strong></p>
+    <ul style="margin-left:24px;margin-bottom:16px;">
+      <li><a href="https://news.ycombinator.com/show" style="color:var(--accent);">Show HN 最新</a></li>
+    </ul>
+
+    <p><strong>中文科技媒体</strong></p>
+    <ul style="margin-left:24px;margin-bottom:16px;">
+      <li><a href="https://twitter.com/aiwarts" style="color:var(--accent);">卡尔的AI沃茨 (@aiwarts)</a></li>
+      <li><a href="https://twitter.com/vista8" style="color:var(--accent);">向阳乔木 (@vista8)</a></li>
+    </ul>
+
+    <p><strong>GitHub 搜索</strong></p>
+    <ul style="margin-left:24px;">
+      <li><a href="https://github.com/search?q=SKILL.md+claude&type=repositories" style="color:var(--accent);">SKILL.md + claude</a></li>
+      <li><a href="https://github.com/trending" style="color:var(--accent);">GitHub Trending</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <span>Generated by Skill Scout · 情报发现助手</span>
+  <span>2026-04-03 · 第 1 期</span>
+</div>
+
+</div>
+</body>
+</html>

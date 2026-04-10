@@ -1,0 +1,21 @@
+{
+  "reports": [
+    {
+      "date": "2026-04-08",
+      "filename": "skill-scout-report-2026-04-08.html",
+      "title": "Claude Skills 发现报告 — 2026-04-08",
+      "newSkillsCount": 15,
+      "categories": ["安全审计", "自动化/Meta", "高星精选", "开发者工具", "垂直行业"]
+    },
+    {
+      "date": "2026-04-03",
+      "filename": "skill-scout-report-2026-04-03.html",
+      "title": "Claude Skills 发现报告 — 2026-04-03",
+      "newSkillsCount": 8,
+      "categories": ["开发者工具", "C端精选", "整活/创意型", "垂直行业"]
+    }
+  ],
+  "totalReports": 2,
+  "lastUpdated": "2026-04-08T14:00:00Z",
+  "description": "Skill Scout 历史报告索引"
+}

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Skills 发现报告 — 2026-04-08</title>
+<style>
+:root {
+  --bg: #F7F5F0;
+  --surface: #FFFFFF;
+  --surface2: #F1EDE6;
+  --border: #E0D9D0;
+  --text: #1C1A17;
+  --muted: #7A756D;
+  --accent: #5340C4;
+  --accent-light: #EAE7FA;
+  --teal: #0A6B52;
+  --teal-light: #DFF2EC;
+  --amber: #8A5200;
+  --amber-light: #FDF0D8;
+  --red: #A8200D;
+  --red-light: #FBEAE8;
+  --blue: #1D4ED8;
+  --blue-light: #EEF2FF;
+  --serif: Georgia, 'Songti SC', STSong, serif;
+  --sans: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --mono: 'SF Mono', Consolas, 'Courier New', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--sans); font-size: 15px; line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+.page { max-width: 780px; margin: 0 auto; padding: 0 24px 80px; }
+
+.hero { padding: 64px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 48px; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
+  color: var(--accent); background: var(--accent-light);
+  padding: 4px 12px; border-radius: 99px; margin-bottom: 20px;
+}
+.hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.hero h1 {
+  font-family: var(--serif); font-size: clamp(28px, 5vw, 48px);
+  line-height: 1.15; letter-spacing: -.02em; margin-bottom: 16px;
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero-desc { font-size: 16px; color: var(--muted); max-width: 600px; line-height: 1.7; margin-bottom: 24px; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 20px; }
+.meta-item { display: flex; flex-direction: column; gap: 2px; }
+.meta-label { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+.meta-value { font-size: 13px; font-weight: 500; }
+.meta-value a { color: var(--accent); text-decoration: none; }
+.meta-value a:hover { text-decoration: underline; }
+
+.section { margin-bottom: 48px; }
+.section-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .1em;
+  color: var(--muted); text-transform: uppercase; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+h2 { font-family: var(--serif); font-size: 26px; line-height: 1.25; margin-bottom: 16px; }
+h3 { font-size: 14px; font-weight: 700; letter-spacing: .02em; margin: 24px 0 10px; }
+p { margin-bottom: 12px; }
+
+.widget-frame {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden; margin: 24px 0;
+}
+.widget-header {
+  background: var(--surface2); padding: 10px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+}
+.widget-header .dot { width: 8px; height: 8px; border-radius: 50%; }
+.widget-body { padding: 24px; }
+
+.callout {
+  border-left: 3px solid var(--accent); background: var(--accent-light);
+  padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 20px 0; font-size: 14px;
+}
+.callout.teal { border-color: var(--teal); background: var(--teal-light); }
+.callout.amber { border-color: var(--amber); background: var(--amber-light); }
+.callout.red { border-color: var(--red); background: var(--red-light); }
+.callout-title {
+  font-weight: 700; font-size: 12px; letter-spacing: .05em;
+  text-transform: uppercase; margin-bottom: 6px; color: var(--accent);
+}
+.callout.teal .callout-title { color: var(--teal); }
+.callout.amber .callout-title { color: var(--amber); }
+.callout.red .callout-title { color: var(--red); }
+
+.skill-grid { display: grid; gap: 16px; }
+.skill-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px;
+}
+.skill-card-header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+}
+.skill-icon {
+  width: 40px; height: 40px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.skill-title {
+  font-weight: 600; font-size: 15px;
+}
+.skill-title a {
+  color: var(--accent); text-decoration: none;
+}
+.skill-title a:hover { text-decoration: underline; }
+.skill-meta {
+  font-family: var(--mono); font-size: 10px; color: var(--muted);
+}
+.skill-desc {
+  font-size: 14px; color: var(--text); margin-bottom: 12px;
+}
+.skill-tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.skill-tag {
+  font-family: var(--mono); font-size: 10px;
+  background: var(--surface2); color: var(--muted);
+  padding: 2px 8px; border-radius: 4px;
+}
+.skill-tag.source {
+  background: var(--accent-light); color: var(--accent);
+}
+
+.past-skills-list {
+  list-style: none;
+}
+.past-skills-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: 8px;
+}
+.past-skills-list li:last-child {
+  border-bottom: none;
+}
+.skill-link {
+  color: var(--accent); text-decoration: none;
+  font-family: var(--mono); font-size: 13px;
+}
+.skill-link:hover { text-decoration: underline; }
+.skill-desc-inline {
+  color: var(--text); font-size: 14px;
+}
+.skill-meta-inline {
+  color: var(--muted); font-size: 12px;
+}
+.report-link {
+  font-size: 12px; color: var(--teal); text-decoration: none;
+  margin-left: auto;
+}
+.report-link:hover { text-decoration: underline; }
+
+.history-reports {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px;
+}
+.current-report {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.past-reports h3 {
+  font-size: 13px; color: var(--muted);
+  margin-bottom: 12px;
+}
+.past-reports ul {
+  list-style: none;
+}
+.past-reports li {
+  padding: 8px 0;
+  font-size: 14px;
+}
+.past-reports a {
+  color: var(--accent); text-decoration: none;
+}
+.past-reports a:hover { text-decoration: underline; }
+
+.metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0; }
+.metric-card { background: var(--surface2); border-radius: 10px; padding: 14px; text-align: center; }
+.metric-val { font-family: var(--serif); font-size: 28px; line-height: 1.1; }
+.metric-label { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+.mc-teal { color: var(--teal); }
+.mc-amber { color: var(--amber); }
+.mc-accent { color: var(--accent); }
+
+.footer {
+  margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+}
+
+@media (max-width: 600px) {
+  body { padding: 16px; }
+  .hero h1 { font-size: 28px; }
+  .skill-card-header { flex-direction: column; align-items: flex-start; }
+  .metric-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-tag">SKILL SCOUT · 2026-04-08</div>
+  <h1>Claude Skills <em>发现报告</em></h1>
+  <p class="hero-desc">本周深度搜索发现 15 个优质 Claude Skills，涵盖安全审计、自动化、生产力工具和垂直行业应用。</p>
+  <div class="meta-row">
+    <div class="meta-item">
+      <span class="meta-label">新发现</span>
+      <span class="meta-value">15 个 Skills</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">信号源</span>
+      <span class="meta-value">GitHub 深度搜索</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">报告编号</span>
+      <span class="meta-value">#002</span>
+    </div>
+  </div>
+</div>
+
+<!-- 01 信号源概览 -->
+<div class="section">
+  <div class="section-label">01 · 信号源概览</div>
+  <h2>本周情报来源</h2>
+  <p>本周通过多维度 GitHub 搜索策略，发现了大量新创建的 Skills 项目。搜索覆盖 SKILL.md 关键词、Claude Code topic、MCP 协议相关仓库，以及生产力/自动化分类。</p>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="metric-val mc-teal">15</div>
+      <div class="metric-label">精选 Skills<br>本周收录</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-val mc-amber">3.7k</div>
+      <div class="metric-label">最高 Stars<br>awesome-agent-skills</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-val mc-accent">4</div>
+      <div class="metric-label">新趋势<br>安全审计类</div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 本期新发现 -->
+<div class="section">
+  <div class="section-label">02 · 本期新发现</div>
+  <h2>15 个精选 Skills</h2>
+
+  <h3>🔒 安全审计类（新趋势）</h3>
+  <div class="skill-grid">
+    <div class="skill-card" id="skill-famclaw-honeybadger">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--red-light);">🛡️</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/famclaw/honeybadger" target="_blank">famclaw/honeybadger</a>
+          </div>
+          <div class="skill-meta">GitHub 新创建 · 49分钟前 · 首次收录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        AI agent skills 和 MCP 服务器的安全扫描器。你说「检查一下这个 skill 的安全性」，Claude 会自动扫描 SKILL.md 文件中的密钥泄露、CVE 漏洞、供应链攻击风险和提示注入漏洞。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">GitHub 最新</span>
+        <span class="skill-tag">安全扫描</span>
+        <span class="skill-tag">漏洞检测</span>
+        <span class="skill-tag">供应链安全</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="skill-kriszi-soon-skill-scanner">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--amber-light);">🔍</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/kriszi-soon/skill-scanner" target="_blank">kriszi-soon/skill-scanner</a>
+          </div>
+          <div class="skill-meta">GitHub 新创建 · 11小时前 · 首次收录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        Claude Code skills、plugins 和 SKILL.md 文件的安全审计工具。与 HoneyBadger 类似但侧重点不同，更专注于静态代码分析和配置合规性检查。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">GitHub 最新</span>
+        <span class="skill-tag">安全审计</span>
+        <span class="skill-tag">静态分析</span>
+        <span class="skill-tag">合规检查</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>🤖 自动化/Meta-Skills</h3>
+  <div class="skill-grid">
+    <div class="skill-card" id="skill-nikkiunitary185-autoimprove">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--teal-light);">🔄</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/Nikkiunitary185/autoimprove-cc" target="_blank">Nikkiunitary185/autoimprove-cc</a>
+          </div>
+          <div class="skill-meta">GitHub 新创建 · 1小时前 · 首次收录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        自动改进 Claude Code SKILL.md 的 agent 驱动评估循环。你说「帮我优化这个 skill」，它会自动运行二进制断言测试、收集反馈并通过 git 提交持续改进 skill 质量。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">GitHub 最新</span>
+        <span class="skill-tag">Meta-Skill</span>
+        <span class="skill-tag">自动优化</span>
+        <span class="skill-tag">CI/CD</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="skill-agentsys">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--accent-light);">⚡</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/agentsys/agentsys" target="_blank">agentsys/agentsys</a>
+          </div>
+          <div class="skill-meta">GitHub · 704 stars · 生产力自动化</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        AI 写代码，这个自动化其他一切。包含 19 个插件、47 个 agents 和 40 个 skills，专为 Claude Code 设计。你说「部署这个应用到 AWS」，它会自动处理 CI/CD、监控、日志等全流程。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">高星项目</span>
+        <span class="skill-tag">DevOps 自动化</span>
+        <span class="skill-tag">CI/CD</span>
+        <span class="skill-tag">云部署</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="skill-isparto">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--blue-light);">👥</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/BinaryHB0916/iSparto" target="_blank">BinaryHB0916/iSparto</a>
+          </div>
+          <div class="skill-meta">GitHub · 32 stars · 一人成军</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        「一人成军」——使用 Claude Code Agent Team 模式运行完整 AI 开发团队。适合独立开发者，一个指令启动产品经理、架构师、前端、后端、测试等角色协同工作。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">热门项目</span>
+        <span class="skill-tag">多 Agent</span>
+        <span class="skill-tag">团队协作</span>
+        <span class="skill-tag">独立开发者</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>🌟 高星精选（值得优先关注）</h3>
+  <div class="skill-grid">
+    <div class="skill-card" id="skill-awesome-agent-skills">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--amber-light);">📚</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/awesome-agent-skills/awesome-agent-skills" target="_blank">awesome-agent-skills</a>
+          </div>
+          <div class="skill-meta">GitHub · 3.7k stars · 技能目录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        教程、指南和 Agent Skills 目录的聚合仓库。类似 awesome-list 但专注于 Claude、GPT 等 AI Agent 的 Skills，持续更新维护，是发现新 Skills 的宝藏入口。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">3.7k Stars</span>
+        <span class="skill-tag">Awesome List</span>
+        <span class="skill-tag">技能目录</span>
+        <span class="skill-tag">持续更新</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="skill-travel-hacking">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--teal-light);">✈️</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/borski/travel-hacking-toolkit" target="_blank">borski/travel-hacking-toolkit</a>
+          </div>
+          <div class="skill-meta">GitHub · 360 stars · 旅行规划</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        AI 驱动的旅行规划工具包，专注于积分、里程和奖励航班优化。你说「帮我规划去东京的行程，用积分兑换机票」，Claude 自动搜索最优兑换方案、推荐信用卡开卡奖励。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">360 Stars</span>
+        <span class="skill-tag">旅行规划</span>
+        <span class="skill-tag">积分优化</span>
+        <span class="skill-tag">奖励航班</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="skill-browserwing">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--red-light);">🌐</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/browserwing/browserwing" target="_blank">browserwing/browserwing</a>
+          </div>
+          <div class="skill-meta">GitHub · 1.2k stars · 浏览器自动化</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        将浏览器操作转换为 MCP 命令或 Claude Skill，允许 AI Agent 高效控制浏览器。你说「帮我测试这个登录流程」，Claude 自动打开浏览器、填写表单、截图验证。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">1.2k Stars</span>
+        <span class="skill-tag">浏览器自动化</span>
+        <span class="skill-tag">MCP 集成</span>
+        <span class="skill-tag">E2E 测试</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="skill-claude-skills">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--accent-light);">🛠️</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/claude-skills/claude-skills" target="_blank">claude-skills/claude-skills</a>
+          </div>
+          <div class="skill-meta">GitHub · 698 stars · 全栈开发</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        全栈开发 Skills 集合，包含 Cloudflare、React、Tailwind v4 和 AI 集成的完整工作流。你说「创建一个新的全栈项目」，Claude 自动配置前后端、部署到 Cloudflare。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">698 Stars</span>
+        <span class="skill-tag">全栈开发</span>
+        <span class="skill-tag">React</span>
+        <span class="skill-tag">Cloudflare</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="skill-claude-forge">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--surface2);">🔨</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/claude-forge/claude-forge" target="_blank">claude-forge/claude-forge</a>
+          </div>
+          <div class="skill-meta">GitHub · 643 stars · 插件框架</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        受 oh-my-zsh 启发的 Claude Code 插件框架。包含 11 个 AI agents、36 个命令和 15 个 skills。你可以像定制 shell 一样定制 Claude Code 的行为。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">643 Stars</span>
+        <span class="skill-tag">插件框架</span>
+        <span class="skill-tag">oh-my-zsh 风格</span>
+        <span class="skill-tag">生态扩展</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>🔧 开发者工具</h3>
+  <div class="skill-grid">
+    <div class="skill-card" id="skill-veithly-vibeshell">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--blue-light);">🖥️</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/veithly/vibeshell" target="_blank">veithly/vibeshell</a>
+          </div>
+          <div class="skill-meta">GitHub · 10 stars · SSH for AI</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        首款为 AI Agent 设计的 SSH 客户端。让 Claude Code、Codex 等 CLI Agent 通过 MCP skills 管理你的服务器。你说「检查一下服务器日志」，Claude 自动 SSH 登录并分析。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">GitHub</span>
+        <span class="skill-tag">SSH 客户端</span>
+        <span class="skill-tag">服务器管理</span>
+        <span class="skill-tag">MCP</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="skill-alexzio-skills">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--teal-light);">🎯</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/AlexZio00/claude-code-skills" target="_blank">AlexZio00/claude-code-skills</a>
+          </div>
+          <div class="skill-meta">GitHub · 16 stars · 面试驱动开发</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        三个面试驱动的 Claude Code skills：项目脚手架（CLAUDE.md + ROADMAP）、AI 测试配置。通过问答式交互生成项目结构和开发计划。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">GitHub</span>
+        <span class="skill-tag">项目脚手架</span>
+        <span class="skill-tag">面试驱动</span>
+        <span class="skill-tag">规划工具</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="skill-playwright">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--amber-light);">🎭</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/stevenleon30/playwright-agents-droplinx" target="_blank">stevenleon30/playwright-agents-droplinx</a>
+          </div>
+          <div class="skill-meta">GitHub 新创建 · 21小时前 · 首次收录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        AI 驱动的端到端测试自动化 Skill。Claude Code + Playwright + 自定义 SKILL.md。你说「帮我写个测试覆盖这个登录流程」，Claude 自动生成 Playwright 测试代码并执行验证。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">GitHub 最新</span>
+        <span class="skill-tag">E2E 测试</span>
+        <span class="skill-tag">Playwright</span>
+        <span class="skill-tag">测试自动化</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>🏢 垂直行业/特殊场景</h3>
+  <div class="skill-grid">
+    <div class="skill-card" id="skill-printkk">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--blue-light);">🖨️</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/pizzzzzza/printkk-agent-skill" target="_blank">pizzzzzza/printkk-agent-skill</a>
+          </div>
+          <div class="skill-meta">GitHub · 5 stars · POD 电商</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        PrintKK.com (POD 按需打印平台) 的 Agent Skill。你说「设计一个 T 恤图案并下单」，Claude 可以自动调用 PrintKK API 完成设计生成、产品配置和订单创建。兼容 Claude Code、Codex、Cursor 等 30+ AI agents。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">GitHub</span>
+        <span class="skill-tag">POD/电商</span>
+        <span class="skill-tag">多平台兼容</span>
+        <span class="skill-tag">设计自动化</span>
+      </div>
+    </div>
+
+    <div class="skill-card" id="skill-philtzjp">
+      <div class="skill-card-header">
+        <div class="skill-icon" style="background:var(--surface2);">🇯🇵</div>
+        <div>
+          <div class="skill-title">
+            <a href="https://github.com/philtzjp/.skill" target="_blank">philtzjp/.skill</a>
+          </div>
+          <div class="skill-meta">GitHub 新创建 · 19小时前 · 首次收录</div>
+        </div>
+      </div>
+      <div class="skill-desc">
+        日本开发者 PhilTZ 在 Claude Team 内使用的 Skills 公开集合。包含多个日语优化的实用 skills，适合需要日语工作流的用户参考。
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag source">GitHub 最新</span>
+        <span class="skill-tag">日语</span>
+        <span class="skill-tag">Skill 集合</span>
+        <span class="skill-tag">团队协作</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 往期已收录 -->
+<div class="section">
+  <div class="section-label">03 · 往期已收录</div>
+  <h2>历史 Skill 档案</h2>
+  <p>以下 Skill 已在 2026-04-03 期报告中介绍过，点击链接可查看详情或跳转到原报告：</p>
+
+  <ul class="past-skills-list">
+    <li>
+      <a href="https://github.com/jesseduffield/lazygit-skill" target="_blank" class="skill-link">jesseduffield/lazygit-skill</a>
+      <span class="skill-desc-inline">lazygit 可视化 Git 操作</span>
+      <span class="skill-meta-inline">首次: 2026-04-03 | 来源: HN</span>
+      <a href="./skill-scout-report-2026-04-03.html#skill-jesseduffield-lazygit" class="report-link">查看原报告 →</a>
+    </li>
+    <li>
+      <a href="https://github.com/astral-sh/uv-skill" target="_blank" class="skill-link">astral-sh/uv-skill</a>
+      <span class="skill-desc-inline">uv Python 包管理器集成</span>
+      <span class="skill-meta-inline">首次: 2026-04-03 | 来源: Dev.to</span>
+      <a href="./skill-scout-report-2026-04-03.html#skill-astral-sh" class="report-link">查看原报告 →</a>
+    </li>
+    <li>
+      <a href="https://github.com/notionhq/notion-claude-skill" target="_blank" class="skill-link">notionhq/notion-claude-skill</a>
+      <span class="skill-desc-inline">Notion 官方 Skill</span>
+      <span class="skill-meta-inline">首次: 2026-04-03 | 来源: Partner</span>
+      <a href="./skill-scout-report-2026-04-03.html#skill-notionhq-notion" class="report-link">查看原报告 →</a>
+    </li>
+    <li>
+      <a href="https://github.com/excalidraw/excalidraw-skill" target="_blank" class="skill-link">excalidraw/excalidraw-skill</a>
+      <span class="skill-desc-inline">手绘风格图表生成</span>
+      <span class="skill-meta-inline">首次: 2026-04-03 | 来源: GitHub Trending</span>
+      <a href="./skill-scout-report-2026-04-03.html#skill-excalidraw-excalidraw" class="report-link">查看原报告 →</a>
+    </li>
+    <li>
+      <a href="https://github.com/tanweai/pua" target="_blank" class="skill-link">tanweai/pua</a>
+      <span class="skill-desc-inline">大厂 PUA 话术调试框架</span>
+      <span class="skill-meta-inline">首次: 2026-04-03 | 来源: 知乎/CSDN</span>
+      <a href="./skill-scout-report-2026-04-03.html#skill-tanweai-pua" class="report-link">查看原报告 →</a>
+    </li>
+    <li>
+      <a href="https://github.com/remotion-dev/skills" target="_blank" class="skill-link">remotion-dev/skills</a>
+      <span class="skill-desc-inline">代码生成视频</span>
+      <span class="skill-meta-inline">首次: 2026-04-03 | 来源: Medium</span>
+      <a href="./skill-scout-report-2026-04-03.html#skill-remotion-dev-skills" class="report-link">查看原报告 →</a>
+    </li>
+    <li>
+      <a href="https://github.com/shopify/shopify-claude-skill" target="_blank" class="skill-link">shopify/shopify-claude-skill</a>
+      <span class="skill-desc-inline">Shopify 电商运营</span>
+      <span class="skill-meta-inline">首次: 2026-04-03 | 来源: 电商圈</span>
+      <a href="./skill-scout-report-2026-04-03.html#shopify-shopify-skill" class="report-link">查看原报告 →</a>
+    </li>
+    <li>
+      <a href="https://github.com/humanplane/homunculus" target="_blank" class="skill-link">humanplane/homunculus</a>
+      <span class="skill-desc-inline">自进化 Meta-Skill</span>
+      <span class="skill-meta-inline">首次: 2026-04-03 | 来源: HN Show HN</span>
+      <a href="./skill-scout-report-2026-04-03.html#skill-humanplane-homunculus" class="report-link">查看原报告 →</a>
+    </li>
+  </ul>
+</div>
+
+<!-- 04 历史报告专栏 -->
+<div class="section">
+  <div class="section-label">04 · 历史报告专栏</div>
+  <h2>📚 报告存档</h2>
+
+  <div class="history-reports">
+    <div class="current-report">
+      <h3>本期报告</h3>
+      <p style="margin-bottom:12px;">
+        <strong>Claude Skills 发现报告 — 2026-04-08</strong><br>
+        <span style="color:var(--muted);font-size:13px;">15 个新发现 · 安全审计新趋势 · 高星项目精选</span>
+      </p>
+      <a href="./skill-scout-report-2026-04-08.html" download style="font-size:13px;color:var(--accent);">📥 下载本期报告</a>
+    </div>
+    <div class="past-reports">
+      <h3>往期报告</h3>
+      <ul>
+        <li><a href="./skill-scout-report-2026-04-03.html">2026-04-03 期</a> — 8 个新发现 · 开发者工具、C端精选、整活型</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 05 本期洞察 -->
+<div class="section">
+  <div class="section-label">05 · 本期洞察</div>
+  <h2>关键发现</h2>
+
+  <div class="callout teal">
+    <div class="callout-title">💡 趋势观察</div>
+    <ol style="margin-left:20px;">
+      <li><strong>安全审计 Skills 崛起</strong>：本周发现 2 个安全扫描类 Skills（HoneyBadger、skill-scanner），反映 Claude Skills 生态日趋成熟，安全需求开始浮现。</li>
+      <li><strong>生产力工具爆发</strong>：agentsys (704⭐)、claude-forge (643⭐) 等高星项目显示 Claude Code 生态正在快速发展，自动化和插件框架成为热点。</li>
+      <li><strong>Meta-Skills 持续演进</strong>：autoimprove-cc 和 iSparto 代表「Skills 改进 Skills」和「一人成军」的趋势，AI Agent 能力边界不断拓展。</li>
+      <li><strong>垂直场景深化</strong>：从旅行规划（360⭐）到 POD 电商（printkk），Skills 正在渗透到各种专业领域。</li>
+    </ol>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">⚠️ 风险提示</div>
+    <p>本周发现的部分 Skills（HoneyBadger、skill-scanner、autoimprove-cc 等）是<strong>新创建项目</strong>（< 24小时），功能可能尚不稳定。建议观望后再尝试在生产环境使用。高星项目（如 awesome-agent-skills、agentsys）相对稳定，可优先尝试。</p>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">🎯 最值得尝试</div>
+    <p><strong>快速入门：</strong><a href="https://github.com/awesome-agent-skills/awesome-agent-skills" target="_blank">awesome-agent-skills</a> (3.7k⭐) — 发现新 Skills 的宝藏入口</p>
+    <p><strong>如果你是安全工程师：</strong>HoneyBadger 和 skill-scanner 可以帮助审计第三方 Skills</p>
+    <p><strong>如果你是全栈开发者：</strong><a href="https://github.com/claude-skills/claude-skills" target="_blank">claude-skills</a> (698⭐) 提供完整的 Cloudflare + React + Tailwind 工作流</p>
+    <p><strong>如果你是 DevOps：</strong><a href="https://github.com/agentsys/agentsys" target="_blank">agentsys</a> (704⭐) 自动化部署和运维全流程</p>
+    <p><strong>如果你是独立开发者：</strong><a href="https://github.com/BinaryHB0916/iSparto" target="_blank">iSparto</a> (32⭐) 让你一人成军</p>
+    <p><strong>如果你爱旅行：</strong><a href="https://github.com/borski/travel-hacking-toolkit" target="_blank">travel-hacking-toolkit</a> (360⭐) 优化积分和里程使用</p>
+  </div>
+</div>
+
+<!-- 06 来源汇总 -->
+<div class="section">
+  <div class="section-label">06 · 来源汇总</div>
+  <h2>参考链接</h2>
+
+  <div style="font-size:14px;line-height:2;">
+    <p><strong>GitHub 搜索</strong></p>
+    <ul style="margin-left:24px;margin-bottom:16px;">
+      <li><a href="https://github.com/search?q=SKILL.md+claude&type=repositories" style="color:var(--accent);">SKILL.md + claude</a></li>
+      <li><a href="https://github.com/search?q=topic:claude-code&type=repositories" style="color:var(--accent);">topic:claude-code</a></li>
+      <li><a href="https://github.com/trending" style="color:var(--accent);">GitHub Trending</a></li>
+    </ul>
+
+    <p><strong>往期报告</strong></p>
+    <ul style="margin-left:24px;">
+      <li><a href="./skill-scout-report-2026-04-03.html" style="color:var(--accent);">2026-04-03 期报告</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <span>Generated by Skill Scout · 情报发现助手</span>
+  <span>2026-04-08 · 第 2 期</span>
+</div>
+
+</div>
+</body>
+</html>
